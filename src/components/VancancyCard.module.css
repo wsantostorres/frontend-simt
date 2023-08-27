@@ -1,0 +1,161 @@
+.vacancyCardContainer{
+    border-radius: 8px;
+    background: #FFF;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);    
+    padding: 2rem;
+    margin: 44px 0px;
+}
+
+.vacancyCardContainer > h2{
+    font-weight: bold;
+}
+
+.informationVacancy{
+    max-width: 550px;
+    margin-top: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.informationVacancy div > p:first-child{
+    margin-bottom: 4px;
+}
+
+.informationVacancy div > p:last-child{
+    color: #127822;
+}
+
+.buttonCloseModal{
+    color: #353535;
+    background-color: #fff;
+    border: 1px solid #353535;
+    border-radius: 4px;
+    min-width: 200px;
+    transition: .5s;
+}
+
+.buttonCloseModal:hover{
+    color: #fff;
+    background-color: #353535;
+    border: 1px solid #353535;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+.buttonCloseModalDisabled{
+    color: #fff;
+    background-color: #d1d1d1;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    min-width: 200px;
+}  
+
+.buttonsVacancy{
+    display: flex;
+    align-items: center;
+}
+
+.buttonsVacancy > a{
+    color: #fff;
+    background-color: #353535;
+    padding: 10px 20px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    transition: .5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.buttonsVacancy > a > svg{
+    font-size: 20px;
+    margin-right: 3px;
+}
+
+.buttonsVacancy > a:hover{
+    color: #fff;
+    background-color: #111111;
+}
+
+.buttonsVacancy > button{
+    color: #fff;
+    border-color: currentColor;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonSendResume{
+    color: #fff;
+    background-color: #0F5739;
+    transition: .5s ease-in-out;
+}
+
+.buttonSendResume:hover{
+    background-color: #127822;
+}
+
+.buttonSendResume > svg{
+    font-size: 20px;
+    margin-right: 3px;
+}
+
+.buttonDownloadResumes{
+    color: #fff;
+    background-color: #127822;
+    transition: .5s ease-in-out;
+}
+
+.buttonDownloadResumes > svg{
+    font-size: 20px;
+    margin-right: 3px;
+}
+
+.buttonDownloadResumes:hover{
+    background-color: #0F5739;
+}
+
+/* responsive */
+@media(max-width: 600px){
+
+    .vacancyCardContainer{
+        border-radius: 8px;
+        margin: 24px .5rem;
+    }
+
+    .buttonsVacancy > a > span{
+        display: none;
+    }
+
+    .buttonsVacancy > a > svg{
+        margin-right: 0px;
+    }
+
+    .buttonSendResume > span{
+        display: none;
+    }
+
+    .buttonDownloadResumes > svg{
+        margin-right: 0px;
+    }
+
+    .buttonDownloadResumes > span{
+        display: none;
+    }
+
+    .buttonDownloadResumes > svg{
+        margin-right: 0px;
+    }
+}
+
+@media(max-width: 500px){
+    
+    .informationVacancy div:nth-child(3){
+        width: 100%;
+    }
+
+}

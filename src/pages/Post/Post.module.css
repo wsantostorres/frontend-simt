@@ -1,0 +1,226 @@
+/* styles */
+
+.postContainer input:checked{
+    background-color: #0F5739;
+    border-color: #0F5739;
+}
+
+.postContainer input:focus, .postContainer select:focus{
+    border-color: #0F5739;
+    box-shadow: none;
+}
+
+.postContainer nav{
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.20);
+    background-color: #fff;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    width: 100%;
+}
+
+.postContainer > nav img{
+    width: 80px;
+    height: 80px;
+}
+
+.postContainer > nav a:last-child{
+    padding: 10px 50px;
+    color: #353535;
+    background-color: #fff;
+    border: 1px solid #353535;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .5s;
+}
+
+.postContainer > nav a:last-child > svg{
+    font-size: 20px;
+    margin-right: 3px;
+}
+
+
+.postContainer > nav a:last-child:hover{
+    color: #fff;
+    background-color: #353535;
+    border: 1px solid #353535;
+    border-radius: 4px;
+}
+
+.postContainer > nav > div{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.postContainer > form{
+    background-color: #fff;
+    max-width: 768px;
+    margin: auto auto;
+    margin-top: 120px;
+    margin-bottom: 80px;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.25);
+}
+
+.postContainer > form > h2{
+    font-weight: bold;
+}
+
+
+.containerTitleDate{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.containerTitleDate > div:first-child{
+    width: 73%;
+}
+
+.available > p{
+    margin-bottom: 0px;
+}
+
+.available > div{
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    padding: 10px 16px;
+}
+
+.courses{
+    margin-bottom: 0px;
+}
+
+.courses > p{
+    margin-bottom: 0px;
+}
+
+.courses > div{
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    padding: 10px 16px;
+}
+
+.buttonsFormPost{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+    margin-bottom: 0;
+}
+
+.buttonDelete{
+    padding: 10px 30px;
+    background-color: #a5661d;
+    color: white;
+    border-color: #a5661d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .5s ease-in-out;
+    margin-right: 18px;
+}
+
+.buttonDelete:hover{
+    background-color: #cc802a;
+    color: white;
+    border-color: #cc802a;
+}
+
+.buttonDelete > svg{
+    font-size: 18px;
+    margin-right: 3px;
+}
+
+.buttonSave{
+    padding: 10px 30px;
+    background-color: #0F5739;
+    color: white;
+    border-color: #0F5739;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .5s ease-in-out;
+}
+
+.buttonSave:hover{
+    background-color: #127822;
+    border-color: #127822;
+}
+
+.buttonSave > svg{
+    font-size: 18px;
+    margin-right: 3px;
+}
+
+
+/* responsive */
+@media(max-width: 992px){
+    .postContainer > nav > div{
+        max-width: 768px;
+    }
+}
+
+@media(max-width: 768px){
+    .containerTitleDate > div:first-child{
+        margin-bottom: 18px;
+    }
+
+    .containerTitleDate > div{
+        width: 100% !important;
+    }
+}
+
+@media(max-width: 600px){
+    .postContainer > nav > div{
+        max-width: 375px;
+    }
+
+    .postContainer > nav a:last-child{
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50px;
+    }
+
+    .postContainer > nav a:last-child > span{
+        display: none;
+    }
+    
+    .postContainer > nav a:last-child > svg{
+        font-size: 20px;
+        margin-right: 3px;
+    }
+    
+    .postContainer > nav a:last-child:hover{
+        color: #fff;
+        background-color: #353535;
+        border: 1px solid #353535;
+        border-radius: 4px;
+    }
+
+    .postContainer > form{
+        margin: 90px .5rem;
+    }
+
+    .buttonDelete > span{
+        display: none;
+    }
+
+    .buttonSave > span{
+        display: none;
+    }
+}
+
+@media(max-width: 400px){
+    .postContainer > nav > div{
+        max-width: 320px;
+    }
+}
+

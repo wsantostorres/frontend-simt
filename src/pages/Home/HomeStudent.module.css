@@ -1,0 +1,349 @@
+/* styles */
+
+/* nav */
+.pageStudent > nav{
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.20);
+    background-color: #fff;
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    top: 0;
+}
+
+.pageStudent > nav > div{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pageStudent > nav > div > div{
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.pageStudent > nav img{
+    width: 80px;
+    height: 80px;
+}
+
+.inputSearchContainer{
+    margin-left: 24px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #777;
+    outline: 1px solid transparent;
+    display: flex;
+}
+
+.inputSearchContainer > input{
+    border: none;
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.inputSearchContainer > button{
+    font-size: 20px;
+    border: none;
+    border-radius: 0px;
+    padding: 0 8px;
+    background: transparent;
+    color: #777;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+}
+
+.inputSearchContainer > input:focus{
+    outline: none;
+    border: none;
+}
+
+.dropdownUserLogged{
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    white-space: nowrap;
+    padding: 4px 10px;
+    border: 1px solid #353535;
+}
+
+.dropdownUserLogged > div:first-child{
+    background-color: #353535;
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dataUserLogged{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 12px;
+    color: #343434;
+}
+
+.dataUserLogged > div:first-child{
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+
+.dropdownUserLogged > div:last-child{
+    font-size: 24px;
+    color: #343434;
+}
+
+.detailsDropdownUserLogged{
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    white-space: nowrap;
+}
+
+.detailsDropdownUserLogged > div:first-child{
+    background-color: #353535;
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detailsDropdownUserLogged > div:last-child{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 12px;
+    color: #343434;
+}
+
+.detailsDropdownUserLogged > div:last-child > div:first-child{
+    width: 115px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+
+.linkProfile{
+    width: 100%;
+    margin: 14px 0px;
+}
+
+.linkProfile > a{
+    display: block;
+    padding: 3px;
+    background-color: #287C59;
+    color: #fff;
+    border: 1px solid #287C59;
+    border-radius: 4px;
+    transition: .5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.linkProfile > a:hover{
+    background-color: #127822;
+}
+
+.linkProfile > a > svg{
+    font-size: 20px;
+    margin-right: 3px;
+}
+
+.buttonLogout{
+    width: 100%;
+}
+
+.buttonLogout > button{
+    display: block;
+    width: 100%;
+    padding: 3px;
+    background-color: #fff;
+    color: #353535;
+    border-radius: 4px;
+    transition: .5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonLogout > button:hover{
+    background-color: #353535;
+    color: #fff;
+}
+
+.buttonLogout > button > svg{
+    font-size: 22px;
+    margin-right: 3px;
+}
+
+/* main */
+.pageStudent > main{
+    height: 100vh;
+    padding-top: 80px;
+    max-width: 768px;
+    margin: 0 auto;
+    position: relative;
+    scroll-behavior: smooth !important;
+}
+
+.pageStudent > main > h4{
+    margin-top: 44px;
+}
+
+.pageStudent > main > h4 > span{
+    font-weight: bold;
+}
+
+.showLoading{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.buttonBackToTop{
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    top: 80vh;
+    right: 20vw;
+    color: white;
+    font-size: 20px;
+    background-color: #127822;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+/* responsive */
+@media(max-width: 1600px){
+    .buttonBackToTop{
+        right: 10vw;
+    }
+}
+
+@media(max-width: 1368px){
+    .buttonBackToTop{
+        right: 10vw;
+    }
+}
+
+@media(max-width: 1200px){
+    .pageStudent > nav > div{
+        max-width: 992px;
+    }
+
+    .buttonBackToTop{
+        right: 5vw;
+    }
+}
+
+@media(max-width: 1000px){
+    .buttonBackToTop{
+        right: 2vw;
+    }
+}
+
+@media(max-width: 992px){
+    .pageStudent > nav > div{
+        max-width: 768px;
+    }
+}
+
+@media(max-width: 600px){
+    .pageStudent > nav > div{
+        max-width: max-content;
+    }
+
+    .pageStudent > nav > div > div:last-child{
+        margin-left: 24px;
+    }
+    
+    .inputSearchContainer{
+        width: 100%;
+    }
+
+    .dropdownUserLogged{
+        border: none;
+        padding: 0;
+    }
+
+    .dataUserLogged{
+        display: none;
+    }
+
+    .dropdownUserLogged > div:first-child{
+        width: 40px;
+        height: 40px;
+    }
+
+    .pageStudent > main > h4{
+        margin-top: 24px;
+        margin-left: 8px;
+    }
+
+    .buttonBackToTop{
+        width: 50px;
+        height: 50px;
+        top: 88vh;
+        right: 5vw;
+        font-size: 18px;
+    }
+}
+
+@media(max-width: 500px){
+    .pageStudent > nav > div{
+        max-width: 375px;
+    }
+
+    .pageStudent > nav > div > div{
+        width: 100%;
+    }
+
+    .pageStudent > nav > div > div:last-child{
+        justify-content: flex-end;
+        border-top: 1px solid #eee;
+        padding: 10px 0;
+        
+    }
+
+    .pageStudent > nav > div > div:last-child{
+        margin-left: 0px;
+    }
+
+    .pageStudent > main{
+        padding-top: 139px;
+    }
+}
+
+@media(max-width: 400px){
+    .pageStudent > nav > div{
+        max-width: 320px;
+    }
+
+    .pageStudent > nav > div > div{
+        width: 100%;
+    }
+}

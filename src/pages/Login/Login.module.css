@@ -1,0 +1,132 @@
+/* styles */
+.container{
+    height: 100vh;
+    display: flex;
+    color: #353535;
+}
+
+.container > div{
+    width: 50%;
+    height: 100%;
+}
+
+.loginArea{
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.50) 100%), url("/public/background-login.jpg"), lightgray 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginArea > div{
+    padding: 2.5rem 2rem; 
+    border-radius: 8px;
+    background: #FFF;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.20);
+    width: 400px;
+}
+
+.loginArea > div > h2{
+    display: flex;
+    margin: 0;
+}
+
+.loginArea > div > h2 > span{
+    font-size: 32px;
+    display: flex;
+    color: #353535;
+}
+
+.loginArea > div > hr{
+    margin: 1.2rem 0;
+}
+
+.loginArea input{
+    outline-color: #127822;
+    width: 100%;
+}
+
+.loginArea form > input{
+    background-color: #0F5739;
+    border-color: #0F5739;
+    color: white;
+}
+
+.loginArea form > input:hover{
+    background-color: #127822;
+    border-color: #127822;
+    transition: .3s ease-in-out;
+}
+
+.passwordField{
+    border-radius: 4px;
+    border: 1px solid #777;
+    outline: 1px solid transparent;
+    display: flex;
+}
+
+.passwordField > input{
+    border: none;
+}
+
+.passwordField > button{
+    font-size: 25px;
+    border: none;
+    border-radius: 0px;
+    padding: 0 8px;
+    background: transparent;
+    color: #353535;
+}
+
+.passwordField > input:focus{
+    outline: none;
+    border: none;
+}
+
+.copywritingArea{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.copywritingArea > div{
+    height: fit-content;
+    width: fit-content;
+}
+
+.copywritingArea > div > img{
+    width: 150px;
+    height: 150px;
+    margin-bottom: 16px;
+}
+
+.copywritingArea > div > h1{
+    font-weight: bold;
+}
+
+.copywritingArea > div > h1 > span{
+    color: #fff;
+    background-color: #353535;
+    padding: 0px 10px 5px 10px;
+}
+
+/* responsive */
+@media(max-width: 992px){
+
+    .container > div{
+        width: 100%;
+    }
+
+    .copywritingArea{
+        display: none;
+    }
+}
+
+@media(max-width: 600px){
+    .loginArea > div{
+        margin: 0 1rem;
+    }
+}
