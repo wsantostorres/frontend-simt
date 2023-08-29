@@ -70,6 +70,10 @@ const HomeStudent = () => {
         div.style.outlineColor  = "transparent";
     }
 
+    const backToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
   return (
     <div className={styles.pageStudent}>
         <nav>
@@ -140,7 +144,7 @@ const HomeStudent = () => {
                     afternoon={vacancy.dispTarde} 
                     night={vacancy.dispNoite} />
             ))}
-            <a className={styles.buttonBackToTop} href="#top"><BsArrow90DegUp/></a>
+            <button type="button" className={styles.buttonBackToTop} onClick={backToTop}><BsArrow90DegUp/></button>
         </main>
     </div>
   )
