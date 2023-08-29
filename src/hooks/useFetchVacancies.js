@@ -10,7 +10,6 @@ export const useFetchVacancies = () => {
   const { setVacancyMessage } = useMessage();
 
   const [vacancyLoading, setVacancyLoading] = useState(false);
-  const [errorValidation, setErrorValidation] = useState("");
 
   const redirect = useNavigate();
   
@@ -115,24 +114,17 @@ export const useFetchVacancies = () => {
       body: JSON.stringify(data)
     })
     .then((response) => {
-      if (response.status === 201 || response.status === 400) {
+      if (response.status === 201) {
         return response.json();
       }else{
         throw new Error('Erro com o servidor');
       }
     })
     .then((responseJson) => {
-      if(responseJson && !responseJson.hasOwnProperty('id')){
-        setVacancyLoading(false);
-        setVacancyMessage({msg: "Há campos que são obrigatórios.", type: "error"})
-        setErrorValidation(responseJson)
-      }else{
         setVacancyMessage({msg: "Vaga publicada com sucesso.", type: "success"})
-        setErrorValidation("")
         setVacancyLoading(false);
         redirect("/");
         return responseJson;
-      }
     })
     .catch((err) => {
       setVacancyMessage({msg:"Não foi possível publicar a vaga.", type:"error"})
@@ -153,20 +145,13 @@ export const useFetchVacancies = () => {
     .then( async (response) => {
       if (response.status === 200) {
         setVacancyMessage({msg: "Vaga atualizada com sucesso.", type: "success" })
-        setErrorValidation("")
         setVacancyLoading(false);
         redirect("/");
-      }else if(response.status === 400){
-        let responseJSON = await response.json();
-        setVacancyMessage({msg: "Há campos que são obrigatórios.", type: "error"})
-        setVacancyLoading(false);
-        setErrorValidation(responseJSON)
       }else{
         throw new Error('Erro com o servidor');
       }
     })
     .catch((err) => {
-      console.log(err)
       setVacancyMessage({msg:"Não foi possível atualizar a vaga.", type:"error"});
       setVacancyLoading(false);
     });
@@ -248,5 +233,5 @@ export const useFetchVacancies = () => {
     });
   }
 
-  return {searchVacancies, getAllVacancies, getVacancy, postVacancy, putVacancy, deleteVacancy, sendResumeToVacancy, downloadResumes, vacancyLoading, errorValidation}
+  return {searchVacancies, getAllVacancies, getVacancy, postVacancy, putVacancy, deleteVacancy, sendResumeToVacancy, downloadResumes, vacancyLoading}
 }

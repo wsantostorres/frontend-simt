@@ -21,19 +21,27 @@ import { IoMdArrowRoundBack } from 'react-icons/io'
 const Post = () => {
   const { id } = useParams();
   const { vacancyMessage, setVacancyMessage, courseMessage, setCourseMessage } = useMessage();
-  const { getVacancy, postVacancy, putVacancy, deleteVacancy, vacancyLoading, errorValidation } = useFetchVacancies();
+  const { getVacancy, postVacancy, putVacancy, deleteVacancy, vacancyLoading } = useFetchVacancies();
   const { getCourses, courseLoading } = useFetchCourse();
   
+  const [titleErrorValidation, setTitleErrorValidation] = useState("");
   const [validation, setValidation] = useState("");
   const [vacancyErrorMessage, setVacancyErrorMessage] = useState("");
   const [courseErrorMessage, setCourseErrorMessage] = useState("");
   const [courses, setCourse] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [vacancy, setVacancy] = useState({
-    tipo: 1,
+    titulo: "",
+    dataEncerramento: "",
+    descricao: "",
+    tipo: 0,
+    dispManha: 0,
+    dispTarde: 0,
+    dispNoite: 0,
     cursos:[]
   });
 
+  // page title
   if(id){
     document.title = "Editar Publicação"
   }else{
@@ -68,33 +76,15 @@ const Post = () => {
       setVacancyErrorMessage(vacancyMessage);
       setVacancyMessage("");
     }
-
-    if(errorValidation){
-      setValidation(errorValidation)
-    }
     
     if (courseMessage) {
       setCourseErrorMessage(courseMessage);
       setCourseMessage("");
     }
-  }, [vacancyMessage, setVacancyMessage, setVacancyErrorMessage, 
-    errorValidation, setValidation, 
+  }, [vacancyMessage, setVacancyMessage, setVacancyErrorMessage, setValidation, 
     courseMessage, setCourseMessage, setCourseErrorMessage])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    vacancy.cursos = selectedCourses;
-    if(id){
-      await putVacancy(vacancy, id)
-    }else{
-      await postVacancy(vacancy)
-    }
-  }
-  
-  const handleDelete = async (id) => {
-    await deleteVacancy(id)
-  }
-
+  // general functions
   const handleDescriptionChange = (content) => {
     setVacancy({ ...vacancy, descricao: content });
   }
@@ -126,8 +116,7 @@ const Post = () => {
     }
   }
 
-  // FUNÇÃO TEMPORÁRIA PARA CORRIGIR PROBLEMA DA DATA NO INPUT AO RESGATAR DADOS DA VAGA
-  function formatDate(dataEncerramento) {
+  function formatDate(dataEncerramento) { // temporary 
     let dataSelecionada = new Date(dataEncerramento);
     let dia = dataSelecionada.getDate().toString().padStart(2, '0');
     let mes = (dataSelecionada.getMonth() + 1).toString().padStart(2, '0');
@@ -136,6 +125,67 @@ const Post = () => {
     return dataFormatada;
   }
 
+  const validateFields = () => {
+    const errors = {};
+
+    if (!vacancy.titulo) {
+      errors.titulo = "O título é obrigatório.";
+    }else if (vacancy.titulo.length > 100) {
+      errors.titulo = "O título não pode ter mais de 100 caracteres";
+    }
+  
+    if (!vacancy.descricao) {
+      errors.descricao = "A descrição é obrigatória.";
+    }else if(vacancy.descricao.length > 500){
+      errors.descricao = "A descrição pode ter no máximo 500 caracteres";
+    }
+  
+    if (selectedCourses.length === 0) {
+      errors.cursos = "Selecione pelo menos um curso.";
+    }
+  
+    if (!vacancy.dataEncerramento) {
+      errors.dataEncerramento = "A data de encerramento é obrigatória.";
+    }
+
+    if (!vacancy.tipo) {
+      errors.tipo = "Selecione um tipo";
+    }else if(vacancy.tipo !== 1 && vacancy.tipo !== 2){
+      errors.tipo = "Selecione um tipo válido";
+    }
+  
+    return errors;
+  };
+
+  // request functions
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const errors = validateFields();
+
+    if (Object.keys(errors).length > 0) {
+      setTitleErrorValidation("Há campos que são obrigatórios.")
+      setValidation(errors);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    setTitleErrorValidation("")
+    setValidation({});
+
+    vacancy.cursos = selectedCourses;
+    if(id){
+      await putVacancy(vacancy, id)
+    }else{
+      await postVacancy(vacancy)
+    }
+  }
+  
+  const handleDelete = async (id) => {
+    await deleteVacancy(id)
+  }
+
+  // loading
   if(vacancyLoading){
     return (<Loading />)
   }
@@ -149,6 +199,7 @@ const Post = () => {
         </div>
       </nav>
       <form onSubmit={handleSubmit}>
+          {titleErrorValidation && (<p className="alert alert-danger p-2 m-0 mb-3 text-center">{titleErrorValidation}</p>)}
           {vacancyErrorMessage && vacancyErrorMessage.type === "error" && (<p className="alert alert-danger p-2 m-0 mb-3 text-center">{vacancyErrorMessage.msg}</p>)}
           { vacancy && vacancy.id ? (<h2>Editar Publicação</h2>) : (<h2>Nova Publicação</h2>) }
           <hr />
@@ -158,7 +209,7 @@ const Post = () => {
               placeholder="Função, nome da empresa"
               handleChange={handleOnChange}
               valueLabel="Titulo: "
-              value={ vacancy ? vacancy.titulo : "" }
+              value={vacancy.titulo}
               messageError={validation && validation.titulo} 
               validationClass={validation && validation.titulo ? 'is-invalid' : ''}/>
 
@@ -166,7 +217,7 @@ const Post = () => {
               type="date"
               handleChange={handleOnChange}
               valueLabel="Data de Encerramento: "
-              value={ vacancy ? vacancy.dataEncerramento : "" }
+              value={vacancy.dataEncerramento}
               messageError={validation && validation.dataEncerramento} 
               validationClass={validation && validation.dataEncerramento ? 'is-invalid' : ''}/>
           </div>
@@ -178,33 +229,33 @@ const Post = () => {
                 rows="5"
                 handleChange={handleDescriptionChange}
                 valueLabel="Descrição: "
-                value={vacancy ? vacancy.descricao : ""} 
+                value={vacancy.descricao} 
                 messageError={validation && validation.descricao} />
           </div>
 
           <Select name="tipo"
           handleChange={handleOnChange}
           valueLabel="Tipo: "
-          value={vacancy ? vacancy.tipo : 0 } 
-          validationError={validation && validation.tipo} />
+          value={vacancy.tipo} 
+          messageError={validation && validation.tipo} 
+          validationClass={validation && validation.tipo ? 'is-invalid' : ''} />
         
-
           <div className={styles.available}>
             <p>Disponibilidade: </p>
             <div>
               <Checkbox name="dispManha"
                     id="dispManha"
-                    checked={vacancy && vacancy.dispManha === 1 ? true : false}
+                    checked={vacancy.dispManha === 1 ? true : false}
                     valueLabel="Manhã"
                     handleChange={handleOnChange} />
               <Checkbox name="dispTarde"
                     id="dispTarde"
-                    checked={vacancy && vacancy.dispTarde === 1 ? true : false}
+                    checked={vacancy.dispTarde === 1 ? true : false}
                     valueLabel="Tarde"
                     handleChange={handleOnChange} />
               <Checkbox name="dispNoite"
                     id="dispNoite"
-                    checked={vacancy && vacancy.dispNoite === 1 ? true : false}
+                    checked={vacancy.dispNoite === 1 ? true : false}
                     valueLabel="Noite"
                     handleChange={handleOnChange} />
             </div>
