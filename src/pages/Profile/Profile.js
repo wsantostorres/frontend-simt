@@ -9,6 +9,9 @@ const handleSubmit = () => {
 }
 
 const Profile = () => {
+
+  document.title = "Meu Perfil";
+
   return (
     <div className={styles.profileContainer}>
       <nav>

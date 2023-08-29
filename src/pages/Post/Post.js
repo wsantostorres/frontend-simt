@@ -34,6 +34,12 @@ const Post = () => {
     cursos:[]
   });
 
+  if(id){
+    document.title = "Editar Publicação"
+  }else{
+    document.title = "Nova Publicação";
+  }
+
   useEffect(() => {
     (async () => {
       if(id){
