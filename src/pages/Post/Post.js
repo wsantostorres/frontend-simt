@@ -23,13 +23,13 @@ const Post = () => {
   const { vacancyMessage, setVacancyMessage, courseMessage, setCourseMessage } = useMessage();
   const { getVacancy, postVacancy, putVacancy, deleteVacancy, vacancyLoading, errorValidation } = useFetchVacancies();
   const { getCourses, courseLoading } = useFetchCourse();
-
+  
   const [validation, setValidation] = useState("");
-  const [vacancieErrorMessage, setVacancieErrorMessage] = useState("");
+  const [vacancyErrorMessage, setVacancyErrorMessage] = useState("");
   const [courseErrorMessage, setCourseErrorMessage] = useState("");
   const [courses, setCourse] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState([]);
-  const [vacancie, setVacancie] = useState({
+  const [vacancy, setVacancy] = useState({
     tipo: 1,
     cursos:[]
   });
@@ -40,9 +40,9 @@ const Post = () => {
         const vacancyData = await getVacancy(id);
 
         if(vacancyData !== null){
-          // setVacancie(vacancyData)
+          // setVacancy(vacancyData)
           let dataEncerra = formatDate(vacancyData.dataEncerramento)
-          setVacancie({...vacancyData, dataEncerramento:dataEncerra})
+          setVacancy({...vacancyData, dataEncerramento:dataEncerra})
           setSelectedCourses(vacancyData.cursos)
         }
       
@@ -59,7 +59,7 @@ const Post = () => {
 
   useEffect(() => {
     if (vacancyMessage) {
-      setVacancieErrorMessage(vacancyMessage);
+      setVacancyErrorMessage(vacancyMessage);
       setVacancyMessage("");
     }
 
@@ -71,17 +71,17 @@ const Post = () => {
       setCourseErrorMessage(courseMessage);
       setCourseMessage("");
     }
-  }, [vacancyMessage, setVacancyMessage, setVacancieErrorMessage, 
+  }, [vacancyMessage, setVacancyMessage, setVacancyErrorMessage, 
     errorValidation, setValidation, 
     courseMessage, setCourseMessage, setCourseErrorMessage])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    vacancie.cursos = selectedCourses;
+    vacancy.cursos = selectedCourses;
     if(id){
-      await putVacancy(vacancie, id)
+      await putVacancy(vacancy, id)
     }else{
-      await postVacancy(vacancie)
+      await postVacancy(vacancy)
     }
   }
   
@@ -90,7 +90,7 @@ const Post = () => {
   }
 
   const handleDescriptionChange = (content) => {
-    setVacancie({ ...vacancie, descricao: content });
+    setVacancy({ ...vacancy, descricao: content });
   }
 
   const handleOnChange = (e, cursoId) => {
@@ -116,7 +116,7 @@ const Post = () => {
         value = e.target.value;
       }
   
-      setVacancie({ ...vacancie, [name]: value });
+      setVacancy({ ...vacancy, [name]: value });
     }
   }
 
@@ -143,8 +143,8 @@ const Post = () => {
         </div>
       </nav>
       <form onSubmit={handleSubmit}>
-          {vacancieErrorMessage && vacancieErrorMessage.type === "error" && (<p className="alert alert-danger p-2 m-0 mb-3 text-center">{vacancieErrorMessage.msg}</p>)}
-          { vacancie && vacancie.id ? (<h2>Editar Publicação</h2>) : (<h2>Nova Publicação</h2>) }
+          {vacancyErrorMessage && vacancyErrorMessage.type === "error" && (<p className="alert alert-danger p-2 m-0 mb-3 text-center">{vacancyErrorMessage.msg}</p>)}
+          { vacancy && vacancy.id ? (<h2>Editar Publicação</h2>) : (<h2>Nova Publicação</h2>) }
           <hr />
           <div className={styles.containerTitleDate}>
               <Input name="titulo"
@@ -152,7 +152,7 @@ const Post = () => {
               placeholder="Função, nome da empresa"
               handleChange={handleOnChange}
               valueLabel="Titulo: "
-              value={ vacancie ? vacancie.titulo : "" }
+              value={ vacancy ? vacancy.titulo : "" }
               messageError={validation && validation.titulo} 
               validationClass={validation && validation.titulo ? 'is-invalid' : ''}/>
 
@@ -160,7 +160,7 @@ const Post = () => {
               type="date"
               handleChange={handleOnChange}
               valueLabel="Data de Encerramento: "
-              value={ vacancie ? vacancie.dataEncerramento : "" }
+              value={ vacancy ? vacancy.dataEncerramento : "" }
               messageError={validation && validation.dataEncerramento} 
               validationClass={validation && validation.dataEncerramento ? 'is-invalid' : ''}/>
           </div>
@@ -172,14 +172,14 @@ const Post = () => {
                 rows="5"
                 handleChange={handleDescriptionChange}
                 valueLabel="Descrição: "
-                value={vacancie ? vacancie.descricao : ""} 
+                value={vacancy ? vacancy.descricao : ""} 
                 messageError={validation && validation.descricao} />
           </div>
 
           <Select name="tipo"
           handleChange={handleOnChange}
           valueLabel="Tipo: "
-          value={vacancie ? vacancie.tipo : 0 } 
+          value={vacancy ? vacancy.tipo : 0 } 
           validationError={validation && validation.tipo} />
         
 
@@ -188,17 +188,17 @@ const Post = () => {
             <div>
               <Checkbox name="dispManha"
                     id="dispManha"
-                    checked={vacancie && vacancie.dispManha === 1 ? true : false}
+                    checked={vacancy && vacancy.dispManha === 1 ? true : false}
                     valueLabel="Manhã"
                     handleChange={handleOnChange} />
               <Checkbox name="dispTarde"
                     id="dispTarde"
-                    checked={vacancie && vacancie.dispTarde === 1 ? true : false}
+                    checked={vacancy && vacancy.dispTarde === 1 ? true : false}
                     valueLabel="Tarde"
                     handleChange={handleOnChange} />
               <Checkbox name="dispNoite"
                     id="dispNoite"
-                    checked={vacancie && vacancie.dispNoite === 1 ? true : false}
+                    checked={vacancy && vacancy.dispNoite === 1 ? true : false}
                     valueLabel="Noite"
                     handleChange={handleOnChange} />
             </div>
@@ -229,7 +229,7 @@ const Post = () => {
           {validation && (<small className="invalid-feedback d-block fw-bold" >{validation.cursos}</small>)}
 
           <div className={styles.buttonsFormPost}>
-            {vacancie && vacancie.id && (<button className={styles.buttonDelete } onClick={() => handleDelete(vacancie.id)}><BsTrash /> <span>Excluir</span></button>)}
+            {vacancy && vacancy.id && (<button className={styles.buttonDelete } onClick={() => handleDelete(vacancy.id)}><BsTrash /> <span>Excluir</span></button>)}
             <button type="submit" className={styles.buttonSave } ><LuSave /> <span>Salvar</span></button>
           </div>
       </form>
