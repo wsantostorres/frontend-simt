@@ -164,7 +164,7 @@ const Post = () => {
     const errors = validateFields();
 
     if (Object.keys(errors).length > 0) {
-      setTitleErrorValidation("Há campos que são obrigatórios.")
+      setTitleErrorValidation("Verifique os campos do formulário.")
       setValidation(errors);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;

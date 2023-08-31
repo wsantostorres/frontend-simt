@@ -78,7 +78,7 @@ const Login = () => {
             </div>
             <div className={styles.passwordField}>
                 <input type="password" onChange={(e) => setPassword(e.target.value) } placeholder="Senha: " value={password} id="password" onFocus={inputfocus} onBlur={inputBlur} required/>
-                <button onClick={togglePassword} id="buttonShowPassword"><BiSolidShow/></button>
+                <button type="button" onClick={togglePassword} id="buttonShowPassword"><BiSolidShow/></button>
             </div>
             <input type="submit" value="ENTRAR COM O SUAP" />
             {error && (<p className="alert alert-danger p-2 m-0 mt-3 text-center">{error}</p>)}
