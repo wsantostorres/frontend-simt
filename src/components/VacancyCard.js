@@ -71,11 +71,15 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
     }
 
     const formatDate = (date) => {
-        let formatDate = 'Não informado';
-        if(date){
-            formatDate = date.replaceAll("-", "/")
+        let formattedDate
+        if (date) {
+          const parts = date.split('-');
+          if (parts.length === 3) {
+            formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+          }
         }
-        return formatDate;
+    
+        return formattedDate;
     }
 
   return (

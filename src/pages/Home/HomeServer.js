@@ -5,13 +5,12 @@ import { useFetchVacancies } from "../../hooks/useFetchVacancies";
 import { useAuth } from "../../contexts/AuthContext";
 import { useMessage } from "../../contexts/MessageContext";
 
-import styles from './HomeServer.module.css';
+import styles from './Home.module.css';
 
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { BsSearch } from 'react-icons/bs';
 import { IoExitOutline } from 'react-icons/io5';
 import { BsPlusLg } from 'react-icons/bs';
-import { BsArrow90DegUp } from 'react-icons/bs';
 
 import VacancyCard from "../../components/VacancyCard";
 
@@ -62,26 +61,24 @@ const HomeServer = () => {
         let div = e.target.parentNode;
         div.style.borderColor = "#127822";
         div.style.outlineColor = "#127822";
+        document.getElementById("iconSearch").style.color = "#127822";
     }
 
     const inputBlur = (e) => {
         let div = e.target.parentNode;
         div.style.borderColor = "#777";
         div.style.outlineColor  = "transparent";
-    }
-
-    const backToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById("iconSearch").style.color = "#777";
     }
 
   return (
-    <div className={styles.pageServer}>
+    <div className={styles.pageHome}>
         <nav>
             <div>
                 <div>
                     <Link><img src="/logo.svg" alt="Home"/></Link>
                     <form onSubmit={handleSearch} className={styles.inputSearchContainer}>
-                        <button type='submit'><BsSearch /></button>
+                        <button type='submit' id="iconSearch"><BsSearch /></button>
                         <input type="text" 
                         placeholder="Buscar" 
                         onFocus={inputfocus} 
@@ -90,11 +87,10 @@ const HomeServer = () => {
                     </form>
                 </div>
                 <div>
-                    <Link to="/publicacao"> <BsPlusLg/> <span>Nova Publicação</span></Link>
-                    <div className="dropdown ">
-                        <button className={styles.dropdownUserLogged} data-bs-toggle="dropdown" aria-expanded="false">
+                    <div className="dropdown">
+                        <button className={styles.buttonDropdown} data-bs-toggle="dropdown" aria-expanded="false">
                             <div>{initialLetter(name)}</div>
-                            <div className={styles.dataUserLogged}>
+                            <div className={styles.textDropdown}>
                                 <div>{name}</div>
                                 <div>{bondType}(a)</div>
                             </div>
@@ -104,7 +100,7 @@ const HomeServer = () => {
                         </button>
                         <ul className="dropdown-menu p-3" id="dropdown">
                             <li>
-                                <div className={styles.detailsDropdownUserLogged}>
+                                <div className={styles.openDropdown}>
                                     <div>{initialLetter(name)}</div>
                                     <div>
                                         <div>{name}</div>
@@ -121,7 +117,7 @@ const HomeServer = () => {
                 </div>
             </div>
         </nav>
-        <main id="top">
+        <main>
             {searchText && (
                 <h4>Exibindo resultados para: <span>{searchText}</span></h4>
             )}
@@ -144,7 +140,7 @@ const HomeServer = () => {
                     afternoon={vacancy.afternoon} 
                     night={vacancy.night} />
             ))}
-            <button type="button" className={styles.buttonBackToTop} onClick={backToTop}><BsArrow90DegUp/></button>
+            <Link to="/publicacao" className={styles.buttonNewPublish}><BsPlusLg/></Link>
         </main>
     </div>
   )

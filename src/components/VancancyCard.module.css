@@ -96,7 +96,7 @@
 }
 
 .buttonSendResume:hover{
-    background-color: #127822;
+    background-color: #0F5739;
 }
 
 .buttonSendResume > svg{
@@ -131,11 +131,14 @@
 }
 
 /* responsive */
+@media(max-width: 768px){
+    .vacancyCardContainer{
+        margin: 24px .5rem;
+    }
+}
 @media(max-width: 600px){
-
     .vacancyCardContainer{
         border-radius: 8px;
-        margin: 24px .5rem;
     }
 
     .buttonsVacancy > a > span{
@@ -147,6 +150,10 @@
     }
 
     .buttonSendResume > span{
+        display: none;
+    }
+
+    .resumeSent > span{
         display: none;
     }
 

@@ -5,13 +5,12 @@ import { useFetchVacancies } from "../../hooks/useFetchVacancies";
 import { useAuth } from "../../contexts/AuthContext";
 import { useMessage } from "../../contexts/MessageContext";
 
-import styles from './HomeStudent.module.css';
+import styles from './Home.module.css';
 
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { BsSearch } from 'react-icons/bs';
 import { IoExitOutline } from 'react-icons/io5';
 import { FiUser } from 'react-icons/fi';
-import { BsArrow90DegUp } from 'react-icons/bs';
 
 import VacancyCard from "../../components/VacancyCard";
 
@@ -70,12 +69,8 @@ const HomeStudent = () => {
         div.style.outlineColor  = "transparent";
     }
 
-    const backToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
   return (
-    <div className={styles.pageStudent}>
+    <div className={styles.pageHome}>
         <nav>
             <div>
                 <div>
@@ -90,9 +85,9 @@ const HomeStudent = () => {
                     </form>
                 </div>
                 <div className="dropdown">
-                    <button className={styles.dropdownUserLogged} data-bs-toggle="dropdown" aria-expanded="false">
+                    <button className={styles.buttonDropdown} data-bs-toggle="dropdown" aria-expanded="false">
                         <div>{initialLetter(name)}</div>
-                        <div className={styles.dataUserLogged}>
+                        <div className={styles.textDropdown}>
                             <div>{name}</div>
                             <div>{bondType}(a)</div>
                         </div>
@@ -102,7 +97,7 @@ const HomeStudent = () => {
                     </button>
                     <ul className="dropdown-menu p-3" id="dropdown">
                         <li>
-                            <div className={styles.detailsDropdownUserLogged}>
+                            <div className={styles.openDropdown}>
                                 <div>{initialLetter(name)}</div>
                                 <div>
                                     <div>{name}</div>
@@ -121,7 +116,7 @@ const HomeStudent = () => {
                 </div>
             </div>
         </nav>
-        <main id="top">
+        <main>
             {searchText && (
                 <h4>Exibindo resultados para: <span>{searchText}</span></h4>
             )}
@@ -144,7 +139,6 @@ const HomeStudent = () => {
                     afternoon={vacancy.afternoon} 
                     night={vacancy.night} />
             ))}
-            <button type="button" className={styles.buttonBackToTop} onClick={backToTop}><BsArrow90DegUp/></button>
         </main>
     </div>
   )

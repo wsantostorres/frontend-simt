@@ -117,9 +117,9 @@
 
 .buttonDelete{
     padding: 10px 30px;
-    background-color: #a5661d;
+    background-color: #bb7526;
+    border-color: #bb7526;
     color: white;
-    border-color: #a5661d;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -128,9 +128,8 @@
 }
 
 .buttonDelete:hover{
-    background-color: #cc802a;
-    color: white;
-    border-color: #cc802a;
+    background-color: #a5661d;
+    border-color: #a5661d;
 }
 
 .buttonDelete > svg{
@@ -140,9 +139,9 @@
 
 .buttonSave{
     padding: 10px 30px;
-    background-color: #0F5739;
+    background-color: #127822;
+    border-color: #127822;
     color: white;
-    border-color: #0F5739;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,8 +149,8 @@
 }
 
 .buttonSave:hover{
-    background-color: #127822;
-    border-color: #127822;
+    background-color: #0F5739;
+    border-color: #0F5739;
 }
 
 .buttonSave > svg{
@@ -180,13 +179,18 @@
 @media(max-width: 600px){
     .postContainer > nav > div{
         max-width: 375px;
+        height: 80px;
+    }
+
+    .postContainer > nav img{
+        width: 60px;
+        height: 60px;
     }
 
     .postContainer > nav a:last-child{
         padding: 0;
         width: 40px;
         height: 40px;
-        border-radius: 50px;
     }
 
     .postContainer > nav a:last-child > span{
@@ -209,13 +213,17 @@
         margin: 90px .5rem;
     }
 
+    .buttonDelete{
+        padding: 10px 20px;
+    }
+
     .buttonDelete > span{
         display: none;
     }
 
-    .buttonSave > span{
+    /* .buttonSave > span{
         display: none;
-    }
+    } */
 }
 
 @media(max-width: 400px){

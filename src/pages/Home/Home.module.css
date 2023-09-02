@@ -1,7 +1,4 @@
-/* styles */
-
-/* nav */
-.pageStudent > nav{
+.pageHome > nav{
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.20);
     background-color: #fff;
     position: fixed;
@@ -10,7 +7,7 @@
     top: 0;
 }
 
-.pageStudent > nav > div{
+.pageHome > nav > div{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -19,13 +16,13 @@
     margin: 0 auto;
 }
 
-.pageStudent > nav > div > div{
+.pageHome > nav > div > div{
     display: flex;
     align-items: center;
     height: 100%;
 }
 
-.pageStudent > nav img{
+.pageHome > nav img{
     width: 80px;
     height: 80px;
 }
@@ -64,7 +61,7 @@
     border: none;
 }
 
-.dropdownUserLogged{
+.buttonDropdown{
     display: flex;
     align-items: center;
     background-color: transparent;
@@ -73,7 +70,7 @@
     border: 1px solid #353535;
 }
 
-.dropdownUserLogged > div:first-child{
+.buttonDropdown > div:first-child{
     background-color: #353535;
     color: #fff;
     width: 34px;
@@ -84,7 +81,12 @@
     justify-content: center;
 }
 
-.dataUserLogged{
+.buttonDropdown > div:last-child{
+    font-size: 24px;
+    color: #343434;
+}
+
+.textDropdown{
     display: flex;
     flex-direction: column;
     align-items: baseline;
@@ -94,7 +96,7 @@
     color: #343434;
 }
 
-.dataUserLogged > div:first-child{
+.textDropdown > div:first-child{
     width: 100px;
     overflow: hidden;
     white-space: nowrap;
@@ -102,19 +104,14 @@
     font-weight: bold;
 }
 
-.dropdownUserLogged > div:last-child{
-    font-size: 24px;
-    color: #343434;
-}
-
-.detailsDropdownUserLogged{
+.openDropdown{
     display: flex;
     align-items: center;
     background-color: transparent;
     white-space: nowrap;
 }
 
-.detailsDropdownUserLogged > div:first-child{
+.openDropdown > div:first-child{
     background-color: #353535;
     color: #fff;
     width: 34px;
@@ -125,7 +122,7 @@
     justify-content: center;
 }
 
-.detailsDropdownUserLogged > div:last-child{
+.openDropdown > div:last-child{
     display: flex;
     flex-direction: column;
     align-items: baseline;
@@ -135,7 +132,7 @@
     color: #343434;
 }
 
-.detailsDropdownUserLogged > div:last-child > div:first-child{
+.openDropdown > div:last-child > div:first-child{
     width: 115px;
     overflow: hidden;
     white-space: nowrap;
@@ -198,7 +195,7 @@
 }
 
 /* main */
-.pageStudent > main{
+.pageHome > main{
     height: 100vh;
     padding-top: 80px;
     max-width: 768px;
@@ -207,11 +204,12 @@
     scroll-behavior: smooth !important;
 }
 
-.pageStudent > main > h4{
-    margin-top: 44px;
+.pageHome > main > h4{
+    margin-top: 24px;
+    word-break: break-all;
 }
 
-.pageStudent > main > h4 > span{
+.pageHome > main > h4 > span{
     font-weight: bold;
 }
 
@@ -222,63 +220,80 @@
     transform: translate(-50%, -50%);
 }
 
-.buttonBackToTop{
-    width: 60px;
-    height: 60px;
+.buttonNewPublish{
+    width: 80px;
+    height: 80px;
     position: fixed;
     top: 80vh;
     right: 20vw;
     color: white;
-    font-size: 20px;
+    font-size: 28px;
     background-color: #127822;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     border-color: #127822;
+    filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.25));
+    transition: .5s ease-in-out;
+}
+
+.buttonNewPublish:hover{
+    background-color: #0F5739;
+    border-color: #0F5739;
 }
 
 /* responsive */
 @media(max-width: 1600px){
-    .buttonBackToTop{
+    .buttonNewPublish{
         right: 10vw;
     }
 }
 
 @media(max-width: 1368px){
-    .buttonBackToTop{
+    .buttonNewPublish{
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
         right: 10vw;
     }
 }
 
 @media(max-width: 1200px){
-    .pageStudent > nav > div{
+    .pageHome > nav > div{
         max-width: 992px;
     }
 
-    .buttonBackToTop{
+    .buttonNewPublish{
         right: 5vw;
     }
 }
 
 @media(max-width: 1000px){
-    .buttonBackToTop{
+    .buttonNewPublish{
         right: 2vw;
     }
 }
 
 @media(max-width: 992px){
-    .pageStudent > nav > div{
+    .pageHome > nav > div{
         max-width: 768px;
     }
 }
 
 @media(max-width: 600px){
-    .pageStudent > nav > div{
+    .pageHome > nav > div{
         max-width: max-content;
+        flex-wrap: nowrap;
+        height: 80px;
     }
 
-    .pageStudent > nav > div > div:last-child{
+    .pageHome > nav img{
+        width: 60px;
+        height: 60px;
+    }
+
+    .pageHome > nav > div > div:last-child{
         margin-left: 24px;
     }
     
@@ -286,65 +301,64 @@
         width: 100%;
     }
 
-    .dropdownUserLogged{
+    .buttonDropdown{
         border: none;
         padding: 0;
     }
 
-    .dataUserLogged{
-        display: none;
-    }
-
-    .dropdownUserLogged > div:first-child{
+    .buttonDropdown > div:first-child{
         width: 40px;
         height: 40px;
     }
 
-    .pageStudent > main > h4{
+    .textDropdown{
+        display: none;
+    }
+
+    .pageHome > main > h4{
         margin-top: 24px;
         margin-left: 8px;
     }
 
-    .buttonBackToTop{
+    .buttonNewPublish{
         width: 50px;
         height: 50px;
         top: 88vh;
-        right: 5vw;
+        right: 10vw;
         font-size: 18px;
     }
 }
 
 @media(max-width: 500px){
-    .pageStudent > nav > div{
+    .pageHome > nav > div{
         max-width: 375px;
     }
 
-    .pageStudent > nav > div > div{
-        width: 100%;
+    .pageHome > nav > div > div:last-child{
+        width: fit-content;
     }
 
-    .pageStudent > nav > div > div:last-child{
-        justify-content: flex-end;
-        border-top: 1px solid #eee;
-        padding: 10px 0;
-        
+
+    .inputSearchContainer{
+        min-width: 50px;
+    }
+    
+    .inputSearchContainer > button{
+        font-size: 16px;
     }
 
-    .pageStudent > nav > div > div:last-child{
-        margin-left: 0px;
+    .inputSearchContainer > input{
+        padding: 8px 0px 8px 0px;
     }
 
-    .pageStudent > main{
-        padding-top: 139px;
-    }
 }
 
 @media(max-width: 400px){
-    .pageStudent > nav > div{
+    .pageHome > nav > div{
         max-width: 320px;
     }
 
-    .pageStudent > nav > div > div{
+    .pageHome > nav > div > div{
         width: 100%;
     }
 }
