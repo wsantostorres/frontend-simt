@@ -41,7 +41,7 @@ const HomeStudent = () => {
             setErrorMessage("")
         }
         })()
-    }, [course, search, getAllVacancies, searchVacancies, setSearchText])
+    }, [course, search, getAllVacancies, searchVacancies, setSearchText, bondType])
 
     useEffect(() => {
         if (vacancyMessage.type === "error") {

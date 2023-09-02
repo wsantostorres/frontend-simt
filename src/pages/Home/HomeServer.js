@@ -41,7 +41,7 @@ const HomeServer = () => {
             setErrorMessage("")
         }
         })()
-    }, [search, getAllVacancies, searchVacancies, setSearchText])
+    }, [search, getAllVacancies, searchVacancies, setSearchText, bondType])
 
     useEffect(() => {
         if (vacancyMessage.type === "error") {
