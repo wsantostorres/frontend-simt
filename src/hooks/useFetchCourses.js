@@ -4,7 +4,7 @@ import { useMessage } from "../contexts/MessageContext";
 
 import { apiSimt } from "../services/api"
 
-export const useFetchCourse = () => {
+export const useFetchCourses = () => {
     const url = apiSimt();
     const { setCourseMessage } = useMessage();
 
@@ -12,7 +12,7 @@ export const useFetchCourse = () => {
 
     const getCourses = useCallback(async() => {
       setCourseLoading(true)
-        return fetch(`${url}/cursos/`, {
+        return fetch(`${url}/courses`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',

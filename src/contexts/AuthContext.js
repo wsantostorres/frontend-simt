@@ -1,13 +1,15 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { apiSimt, apiSuap } from "../services/api";
+import { createContext, useContext, useState, useEffect } from 'react';
+
+import { useFetchUsers } from '../hooks/useFetchUsers';
+import { useFetchSuap } from '../hooks/useFetchSuap';
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
 
-  // api urls
-  const urlSIMT = apiSimt();
-  const urlSuap = apiSuap();
+  // data hooks
+  const { getDataUserSimt, saveUserSimt} = useFetchUsers();
+  const { authenticationSuap, getDataUserSuap, verifyToken, refreshToken } = useFetchSuap();
   
   // states
   const [token, setToken] = useState();
@@ -15,6 +17,7 @@ export const AuthContextProvider = ({children}) => {
   const [name, setName] = useState();
   const [bondType, setBondType] = useState();
   const [course, setCourse] = useState();
+  const [studentVacancies, setStudentVacancies] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState();
 
@@ -60,7 +63,7 @@ export const AuthContextProvider = ({children}) => {
 
         localStorage.setItem('tokenSUAP', JSON.stringify(tokenResp))
 
-        if(dataUserSIMT.tipoVinculo === undefined || dataUserSIMT.tipoVinculo === null){
+        if(dataUserSIMT.bondType === undefined || dataUserSIMT.bondType === null){
           let response = await saveUserSimt(dataUserSIMT.id, dataUserSUAP.matricula, dataUserSUAP.nomeCompleto, dataUserSUAP.tipoVinculo, dataUserSUAP.curso)
           
           if(response.status !== 201){
@@ -75,12 +78,19 @@ export const AuthContextProvider = ({children}) => {
         setName(dataUserSUAP.nomeCompleto)
         setBondType(dataUserSUAP.tipoVinculo)
         setCourse(dataUserSUAP.curso)
+        setStudentVacancies(dataUserSIMT.vacanciesIds)
         
       }else if(dataUserSUAP.tipoVinculo === "Servidor"){
         localStorage.setItem('tokenSUAP', JSON.stringify(tokenResp))
 
-        if(dataUserSIMT.tipoVinculo === undefined || dataUserSIMT.tipoVinculo === null){
-          saveUserSimt(dataUserSIMT.id, dataUserSUAP.matricula, dataUserSUAP.nomeCompleto, dataUserSUAP.tipoVinculo)
+        if(dataUserSIMT.bondType === undefined || dataUserSIMT.bondType === null){
+          let response = await saveUserSimt(dataUserSIMT.id, dataUserSUAP.matricula, dataUserSUAP.nomeCompleto, dataUserSUAP.tipoVinculo)
+
+          if(response.status !== 201){
+            localStorage.removeItem('tokenSUAP');
+            setError("Não foi possível estabelecer conexão com o servidor.")
+            return;
+          }
         }
 
         setToken(tokenResp.access)
@@ -110,141 +120,7 @@ export const AuthContextProvider = ({children}) => {
     setCourse("")
   }
 
-  // functions SIMT
-  const getDataUserSimt = useCallback(async (tokenToGetData) => {
-    const response = await fetch(`${urlSIMT}/user/dados/${tokenToGetData}/`, {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/json",
-      }
-    })
-
-    const dataUserSIMT = response.json();
-    return dataUserSIMT;
-  }, [urlSIMT])
-
-  const saveUserSimt = async (id, registration, fullName, bondType, course) => {
-    if(bondType === "Aluno"){
-
-      let data = {
-        id: id,
-        matricula: registration,
-        nomeCompleto: fullName,
-        tipoVinculo: bondType,
-        curso: course
-      }
-
-      const response = await fetch(`${urlSIMT}/alunos`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      })
-
-      return response;
-    }else if(bondType === "Servidor"){
-      
-      let data = {
-        id: id,
-        matricula: registration,
-        nomeCompleto: fullName,
-        tipoVinculo: bondType,
-      }
-
-      const response = await fetch(`${urlSIMT}/servidores`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      })
-
-      return response;
-
-    }else{
-
-    }
-  }
-
-  // functions SUAP
-  const authenticationSuap = async (data) => {
-    const response = await fetch(`${urlSuap}/api/v2/autenticacao/token/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-    })
-
-    return response;
-  }
-
-  const getDataUserSuap = async (tokenToGetData) => {
-    const response = await fetch(`${urlSuap}/api/v2/minhas-informacoes/meus-dados/`, {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${tokenToGetData}`
-      },
-    })
-
-    const dataUserSUAP = await response.json();
-
-    let data = {
-        "id": dataUserSUAP.id,
-        "matricula": dataUserSUAP.matricula,
-        "nomeCompleto": dataUserSUAP.vinculo.nome,
-        "tipoVinculo": dataUserSUAP.tipo_vinculo,
-        "curso": ""
-    }
-
-    if(dataUserSUAP.curso !== null && dataUserSUAP.curso !== ""){
-        data.curso = dataUserSUAP.vinculo.curso;
-    }
-
-    return data;
-  }
-
-  const verifyToken = useCallback(async (tokenToVerify) => {
-    if(tokenToVerify){
-      const data = {
-          "token":tokenToVerify
-      }
-
-      const response = await fetch(`${urlSuap}/api/v2/autenticacao/token/verify/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      })
-
-      const status = await response.status;
-      return status;
-    }
-  }, [urlSuap])
-
-  const refreshToken = useCallback(async (tokenRefresh) => {
-    if(tokenRefresh){
-      const data = {
-          "refresh":tokenRefresh
-      }
-
-      const response = await fetch(`${urlSuap}/api/v2/autenticacao/token/refresh/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      })
-
-      return response;
-    }
-  }, [urlSuap])
-
   useEffect(() => {
-
     const tokenStoraged = JSON.parse(localStorage.getItem('tokenSUAP'));
 
     if(tokenStoraged){
@@ -258,11 +134,15 @@ export const AuthContextProvider = ({children}) => {
               if(status === 200){
                 setId(dataUserSIMT.id);
                 setToken(tokenStoraged);
-                setName(dataUserSIMT.nomeCompleto);
-                setBondType(dataUserSIMT.tipoVinculo);
+                setName(dataUserSIMT.fullName);
+                setBondType(dataUserSIMT.bondType);
 
-                if(dataUserSIMT.curso !== ""){
-                  setCourse(dataUserSIMT.curso);
+                if(dataUserSIMT.course !== ""){
+                  setCourse(dataUserSIMT.course);
+                }
+
+                if(dataUserSIMT.vacanciesIds !== null){
+                  setStudentVacancies(dataUserSIMT.vacanciesIds)
                 }
         
               }else{
@@ -283,11 +163,15 @@ export const AuthContextProvider = ({children}) => {
                     const dataUserSIMT = await getDataUserSimt(newToken.access);
                     setId(dataUserSIMT.id);
                     setToken(newToken);
-                    setName(dataUserSIMT.nomeCompleto);
-                    setBondType(dataUserSIMT.tipoVinculo);
-  
-                    if(dataUserSIMT.curso !== ""){
-                      setCourse(dataUserSIMT.curso);
+                    setName(dataUserSIMT.fullName);
+                    setBondType(dataUserSIMT.bondType);
+
+                    if(dataUserSIMT.course !== ""){
+                      setCourse(dataUserSIMT.course);
+                    }
+
+                    if(dataUserSIMT.vacanciesIds !== null){
+                      setStudentVacancies(dataUserSIMT.vacanciesIds)
                     }
 
                   }else{
@@ -309,9 +193,8 @@ export const AuthContextProvider = ({children}) => {
 
 }, [getDataUserSimt, verifyToken, refreshToken])
 
-
   return (
-    <AuthContext.Provider value={{ token, id, name, bondType, course, error, loading, login, logout }}>
+    <AuthContext.Provider value={{ token, id, name, bondType, course, studentVacancies, setStudentVacancies, error, loading, login, logout }}>
         {children}
     </AuthContext.Provider>
   )

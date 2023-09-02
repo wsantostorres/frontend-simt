@@ -10,14 +10,16 @@ import parse from 'html-react-parser';
 
 import { FiDownloadCloud } from 'react-icons/fi';
 import { BsPlusLg } from 'react-icons/bs';
+import { BsCheckLg } from 'react-icons/bs';
 import { BiEdit } from 'react-icons/bi';
 
 const VacancyCard = ({id, title, description = "", date, type, morning, afternoon, night}) => {
 
     const { vacancyMessage, setVacancyMessage } = useMessage();
-    const { id:studentId, bondType } = useAuth();
+    const { id:studentId, bondType, studentVacancies } = useAuth();
     const { sendResumeToVacancy, downloadResumes, vacancyLoading } = useFetchVacancies();
     const [message, setMessage] = useState("");
+    const [isApplied, setIsApplied] = useState();
 
     useEffect(() => {
 
@@ -27,6 +29,18 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
         }
 
     }, [setVacancyMessage, vacancyMessage, setMessage])
+
+    // Verifica se o ID da vaga está na lista de vagas do aluno
+    useEffect(() => {
+        if(studentVacancies !== null){
+            try{
+                setIsApplied(studentVacancies.includes(id));
+            }catch(err){
+                setIsApplied(null)
+            }
+        }
+    }, [studentVacancies, id])
+    
 
     const availability = (morning, afternoon, night) => {
         let arrayDisp = [];
@@ -59,12 +73,7 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
     const formatDate = (date) => {
         let formatDate = 'Não informado';
         if(date){
-            let dia = date[2];
-            dia = dia.toString().padStart(2, '0')
-            let mes = date[1];
-            mes = mes.toString().padStart(2, '0')
-            let ano = date[0];
-            formatDate = dia + "/" + mes + "/" + ano;
+            formatDate = date.replaceAll("-", "/")
         }
         return formatDate;
     }
@@ -99,8 +108,12 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
                     </>
                 )}
                
-                {bondType === "Aluno" && (
-                    <button className={styles.buttonSendResume} data-bs-toggle="modal" data-bs-target="#modalVacancy" onClick={async() => { await sendResumeToVacancy(studentId, id) }}><BsPlusLg /> <span>Participar</span></button>
+               {bondType === "Aluno" && (
+                    isApplied ? (
+                        <button type="button" className={styles.resumeSent}><BsCheckLg /> <span>Você já está participando</span></button>
+                    ) : (
+                        <button className={styles.buttonSendResume} data-bs-toggle="modal" data-bs-target="#modalVacancy" onClick={async () => { await sendResumeToVacancy(studentId, id) }}><BsPlusLg /> <span>Participar</span></button>
+                    )
                 )}
             </div>
         </div>

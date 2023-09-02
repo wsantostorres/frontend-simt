@@ -31,11 +31,11 @@ const HomeServer = () => {
     useEffect(() => {
         (async () => {
         if(search){
-            const searchResults = await searchVacancies(search);
+            const searchResults = await searchVacancies(search, null, bondType);
             setVacancies(searchResults)
             setSearchText(search)
         }else{
-            const allVacancies = await getAllVacancies();
+            const allVacancies = await getAllVacancies(null, bondType);
             setVacancies(allVacancies)
             setSearchText("")
             setErrorMessage("")
@@ -136,13 +136,13 @@ const HomeServer = () => {
             </div>
             {vacancies && vacancies.map( (vacancy) => (
                 <VacancyCard key={vacancy.id} id={vacancy.id} 
-                    title={vacancy.titulo} 
-                    description={vacancy.descricao}  
-                    date={vacancy.dataEncerramento}
-                    type={vacancy.tipo} 
-                    morning={vacancy.dispManha} 
-                    afternoon={vacancy.dispTarde} 
-                    night={vacancy.dispNoite} />
+                    title={vacancy.title} 
+                    description={vacancy.description}  
+                    date={vacancy.closingDate}
+                    type={vacancy.type} 
+                    morning={vacancy.morning} 
+                    afternoon={vacancy.afternoon} 
+                    night={vacancy.night} />
             ))}
             <button type="button" className={styles.buttonBackToTop} onClick={backToTop}><BsArrow90DegUp/></button>
         </main>

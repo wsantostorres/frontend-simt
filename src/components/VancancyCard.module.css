@@ -91,7 +91,7 @@
 
 .buttonSendResume{
     color: #fff;
-    background-color: #0F5739;
+    background-color: #127822;
     transition: .5s ease-in-out;
 }
 
@@ -101,6 +101,17 @@
 
 .buttonSendResume > svg{
     font-size: 20px;
+    margin-right: 3px;
+}
+
+.resumeSent{
+    color: #fff;
+    background-color: #0F5739;
+    transition: .5s ease-in-out;
+}
+
+.resumeSent > svg{
+    font-size: 22px;
     margin-right: 3px;
 }
 

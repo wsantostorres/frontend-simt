@@ -4,29 +4,34 @@ import { useNavigate } from "react-router-dom"
 import { useMessage } from "../contexts/MessageContext";
 
 import { apiSimt } from "../services/api"
+import { useAuth } from "../contexts/AuthContext";
 
 export const useFetchVacancies = () => {
 
+  // data hooks
+  const { setStudentVacancies } = useAuth();
   const { setVacancyMessage } = useMessage();
 
+  // states
   const [vacancyLoading, setVacancyLoading] = useState(false);
 
   const redirect = useNavigate();
   
   const url = apiSimt();
 
-  const searchVacancies = useCallback(async (search, course) => {
+  const searchVacancies = useCallback(async (search, course, bondType) => {
     setVacancyLoading(true)
 
-    let urlToFetch = `${url}/buscarTitulo?titulo=${search}`;
+    let urlToFetch = `${url}/vacancies/search?title=${search}`;
   
     if (course) {
-      urlToFetch = `${url}/buscarTitulo?titulo=${search}&cursoNome=${course}`;
+      urlToFetch = `${url}/vacancies/search?title=${search}&course=${course}`;
     }
 
     return fetch(urlToFetch, {
       method: "GET",
       headers: {
+        'bondType': `${bondType}`,
         'Content-Type': "application/json"
       }
     }).then((response) => {
@@ -42,26 +47,23 @@ export const useFetchVacancies = () => {
     })
   } , [url, setVacancyMessage])
   
-  const getAllVacancies = useCallback(async (course) => {
+  const getAllVacancies = useCallback(async (course, bondType) => {
     setVacancyLoading(true);
-  
-    let urlToFetch = `${url}/vagas/`;
+    let urlToFetch = `${url}/vacancies`;
   
     if (course) {
-      urlToFetch = `${url}/vagas/?cursoNome=${course}`;
+      urlToFetch = `${url}/vacancies?course=${course}`;
     }
-  
+
     return fetch(urlToFetch, {
       method: "GET",
       headers: {
+        'bondType': `${bondType}`,
         'Content-Type': 'application/json',
       }
     })
     .then((response) => {
-      if (response.status !== 200) {
-        throw new Error('Erro com o servidor');
-      }
-      return response.json();
+        return response.json();
     })
     .then((responseJson) => {
       setVacancyLoading(false);
@@ -78,7 +80,7 @@ export const useFetchVacancies = () => {
   const getVacancy = useCallback( async(id) => {
     setVacancyLoading(true);
   
-    return fetch(`${url}/vagas/${id}/`, {
+    return fetch(`${url}/vacancies/${id}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json'
@@ -106,7 +108,7 @@ export const useFetchVacancies = () => {
   const postVacancy = async(data) => {
     setVacancyLoading(true);
   
-    return fetch(`${url}/vagas/`, {
+    return fetch(`${url}/vacancies`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -135,7 +137,7 @@ export const useFetchVacancies = () => {
   const putVacancy = async(data, id) => {
     setVacancyLoading(true);
   
-    return fetch(`${url}/vagas/${id}`, {
+    return fetch(`${url}/vacancies/${id}`, {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json'
@@ -161,7 +163,7 @@ export const useFetchVacancies = () => {
     setVacancyLoading(true);
   
     try {
-      await fetch(`${url}/vagas/${id}`, {
+      await fetch(`${url}/vacancies/${id}`, {
         method: "DELETE",
         headers: {
           'Content-Type': 'application/json'
@@ -180,13 +182,14 @@ export const useFetchVacancies = () => {
 
   const sendResumeToVacancy = async(studentId, vacancyId) => {
     setVacancyLoading(true);
-    return fetch(`${url}/participar/${studentId}/${vacancyId}/`, {
-      method: "PUT"
+    return fetch(`${url}/vacancies/send-resume/${studentId}/${vacancyId}`, {
+      method: "POST"
       }
     )
     .then((response) => {
       if(response.status === 200){
         setVacancyMessage({msg: "Participação confirmada com sucesso.", type: "send-resume-success"})
+        setStudentVacancies((prevVacanciesIdsStudent) => [...prevVacanciesIdsStudent, vacancyId])
         setVacancyLoading(false);
       }else if(response.status === 409){
         setVacancyMessage({msg: "Você já está participando desta vaga.", type: "send-resume-conflict"})
@@ -203,8 +206,8 @@ export const useFetchVacancies = () => {
 
   const downloadResumes = async(id, vacancyTitle) => {
     setVacancyLoading(true)
-    return fetch(`${url}/baixar-curriculos/${id}/`, {
-        method: 'POST',
+    return fetch(`${url}/vacancies/download-resumes/${id}`, {
+        method: 'GET',
         responseType: 'arraybuffer',
     }).then(async (response) => {
       if(response.status === 200){
@@ -233,5 +236,5 @@ export const useFetchVacancies = () => {
     });
   }
 
-  return {searchVacancies, getAllVacancies, getVacancy, postVacancy, putVacancy, deleteVacancy, sendResumeToVacancy, downloadResumes, vacancyLoading}
+  return {searchVacancies, getAllVacancies, getVacancy, postVacancy, putVacancy, deleteVacancy, sendResumeToVacancy, downloadResumes, vacancyLoading }
 }

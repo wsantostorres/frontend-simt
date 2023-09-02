@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useFetchVacancies } from "../../hooks/useFetchVacancies";
-import { useFetchCourse } from "../../hooks/useFetchCourse";
+import { useFetchCourses } from "../../hooks/useFetchCourses";
 
 import { useMessage } from "../../contexts/MessageContext";
 
@@ -22,7 +22,7 @@ const Post = () => {
   const { id } = useParams();
   const { vacancyMessage, setVacancyMessage, courseMessage, setCourseMessage } = useMessage();
   const { getVacancy, postVacancy, putVacancy, deleteVacancy, vacancyLoading } = useFetchVacancies();
-  const { getCourses, courseLoading } = useFetchCourse();
+  const { getCourses, courseLoading } = useFetchCourses();
   
   const [titleErrorValidation, setTitleErrorValidation] = useState("");
   const [validation, setValidation] = useState("");
@@ -31,14 +31,14 @@ const Post = () => {
   const [courses, setCourse] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [vacancy, setVacancy] = useState({
-    titulo: "",
-    dataEncerramento: "",
-    descricao: "",
-    tipo: 0,
-    dispManha: 0,
-    dispTarde: 0,
-    dispNoite: 0,
-    cursos:[]
+    title: "",
+    closingDate: "",
+    description: "",
+    type: 0,
+    morning: 0,
+    afternoon: 0,
+    night: 0,
+    courses:[]
   });
 
   // page title
@@ -54,10 +54,8 @@ const Post = () => {
         const vacancyData = await getVacancy(id);
 
         if(vacancyData !== null){
-          // setVacancy(vacancyData)
-          let dataEncerra = formatDate(vacancyData.dataEncerramento)
-          setVacancy({...vacancyData, dataEncerramento:dataEncerra})
-          setSelectedCourses(vacancyData.cursos)
+          setVacancy(vacancyData)
+          setSelectedCourses(vacancyData.courses)
         }
       
       }
@@ -86,7 +84,7 @@ const Post = () => {
 
   // general functions
   const handleDescriptionChange = (content) => {
-    setVacancy({ ...vacancy, descricao: content });
+    setVacancy({ ...vacancy, description: content });
   }
 
   const handleOnChange = (e, cursoId) => {
@@ -116,42 +114,33 @@ const Post = () => {
     }
   }
 
-  function formatDate(dataEncerramento) { // temporary 
-    let dataSelecionada = new Date(dataEncerramento);
-    let dia = dataSelecionada.getDate().toString().padStart(2, '0');
-    let mes = (dataSelecionada.getMonth() + 1).toString().padStart(2, '0');
-    let ano = dataSelecionada.getFullYear();
-    let dataFormatada = `${ano}-${mes}-${dia}`;
-    return dataFormatada;
-  }
-
   const validateFields = () => {
     const errors = {};
 
-    if (!vacancy.titulo) {
-      errors.titulo = "O título é obrigatório.";
-    }else if (vacancy.titulo.length > 100) {
-      errors.titulo = "O título não pode ter mais de 100 caracteres";
+    if (!vacancy.title) {
+      errors.title = "O título é obrigatório.";
+    }else if (vacancy.title.length > 100) {
+      errors.title = "O título não pode ter mais de 100 caracteres";
     }
   
-    if (!vacancy.descricao) {
-      errors.descricao = "A descrição é obrigatória.";
-    }else if(vacancy.descricao.length > 500){
-      errors.descricao = "A descrição pode ter no máximo 500 caracteres";
+    if (!vacancy.description) {
+      errors.description = "A descrição é obrigatória.";
+    }else if(vacancy.description.length > 500){
+      errors.description = "A descrição pode ter no máximo 500 caracteres";
     }
   
     if (selectedCourses.length === 0) {
-      errors.cursos = "Selecione pelo menos um curso.";
+      errors.courses = "Selecione pelo menos um curso.";
     }
   
-    if (!vacancy.dataEncerramento) {
-      errors.dataEncerramento = "A data de encerramento é obrigatória.";
+    if (!vacancy.closingDate) {
+      errors.closingDate = "A data de encerramento é obrigatória.";
     }
 
-    if (!vacancy.tipo) {
-      errors.tipo = "Selecione um tipo";
-    }else if(vacancy.tipo !== 1 && vacancy.tipo !== 2){
-      errors.tipo = "Selecione um tipo válido";
+    if (!vacancy.type) {
+      errors.type = "Selecione um tipo.";
+    }else if(vacancy.type !== 1 && vacancy.type !== 2){
+      errors.type = "Selecione um tipo válido.";
     }
   
     return errors;
@@ -173,7 +162,7 @@ const Post = () => {
     setTitleErrorValidation("")
     setValidation({});
 
-    vacancy.cursos = selectedCourses;
+    vacancy.courses = selectedCourses;
     if(id){
       await putVacancy(vacancy, id)
     }else{
@@ -204,58 +193,58 @@ const Post = () => {
           { vacancy && vacancy.id ? (<h2>Editar Publicação</h2>) : (<h2>Nova Publicação</h2>) }
           <hr />
           <div className={styles.containerTitleDate}>
-              <Input name="titulo"
+              <Input name="title"
               type="text"
               placeholder="Função, nome da empresa"
               handleChange={handleOnChange}
               valueLabel="Titulo: "
-              value={vacancy.titulo}
-              messageError={validation && validation.titulo} 
-              validationClass={validation && validation.titulo ? 'is-invalid' : ''}/>
+              value={vacancy.title}
+              messageError={validation && validation.title} 
+              validationClass={validation && validation.title ? 'is-invalid' : ''}/>
 
-              <Input name="dataEncerramento"
+              <Input name="closingDate"
               type="date"
               handleChange={handleOnChange}
               valueLabel="Data de Encerramento: "
-              value={vacancy.dataEncerramento}
-              messageError={validation && validation.dataEncerramento} 
-              validationClass={validation && validation.dataEncerramento ? 'is-invalid' : ''}/>
+              value={vacancy.closingDate}
+              messageError={validation && validation.closingDate} 
+              validationClass={validation && validation.closingDate ? 'is-invalid' : ''}/>
           </div>
           
           <div>
-            <EditorDescription name="descricao" 
+            <EditorDescription name="description" 
                 placeholder="Requisítos, valor a bolsa"
                 cols="5"
                 rows="5"
                 handleChange={handleDescriptionChange}
                 valueLabel="Descrição: "
-                value={vacancy.descricao} 
-                messageError={validation && validation.descricao} />
+                value={vacancy.description} 
+                messageError={validation && validation.description} />
           </div>
 
-          <Select name="tipo"
+          <Select name="type"
           handleChange={handleOnChange}
           valueLabel="Tipo: "
-          value={vacancy.tipo} 
-          messageError={validation && validation.tipo} 
-          validationClass={validation && validation.tipo ? 'is-invalid' : ''} />
+          value={vacancy.type} 
+          messageError={validation && validation.type} 
+          validationClass={validation && validation.type ? 'is-invalid' : ''} />
         
           <div className={styles.available}>
             <p>Disponibilidade: </p>
             <div>
-              <Checkbox name="dispManha"
-                    id="dispManha"
-                    checked={vacancy.dispManha === 1 ? true : false}
+              <Checkbox name="morning"
+                    id="morning"
+                    checked={vacancy.morning === 1 ? true : false}
                     valueLabel="Manhã"
                     handleChange={handleOnChange} />
-              <Checkbox name="dispTarde"
-                    id="dispTarde"
-                    checked={vacancy.dispTarde === 1 ? true : false}
+              <Checkbox name="afternoon"
+                    id="afternoon"
+                    checked={vacancy.afternoon === 1 ? true : false}
                     valueLabel="Tarde"
                     handleChange={handleOnChange} />
-              <Checkbox name="dispNoite"
-                    id="dispNoite"
-                    checked={vacancy.dispNoite === 1 ? true : false}
+              <Checkbox name="night"
+                    id="night"
+                    checked={vacancy.night === 1 ? true : false}
                     valueLabel="Noite"
                     handleChange={handleOnChange} />
             </div>
@@ -263,7 +252,7 @@ const Post = () => {
 
           <div className={styles.courses}>
             <p>Cursos:</p>
-            <p>{courseLoading && <span>Carregando cursos...</span> }</p>
+            <p>{courseLoading && <span>Carregando courses...</span> }</p>
             <p>{!courseLoading && courseErrorMessage && courseErrorMessage.msg}</p>
             <div>
               {courses && courses.map((course) => {
@@ -274,16 +263,16 @@ const Post = () => {
                     name={course.id}
                     id={course.id}
                     checked={isChecked}
-                    valueLabel={course.nome}
+                    valueLabel={course.name}
                     handleChange={handleOnChange}
-                    messageError={validation && validation.cursos}
-                    validationClass={validation && validation.cursos ? 'is-invalid' : ''} />
+                    messageError={validation && validation.courses}
+                    validationClass={validation && validation.courses ? 'is-invalid' : ''} />
                   </div>
                   );
               })}
             </div>
           </div>
-          {validation && (<small className="invalid-feedback d-block fw-bold" >{validation.cursos}</small>)}
+          {validation && (<small className="invalid-feedback d-block fw-bold" >{validation.courses}</small>)}
 
           <div className={styles.buttonsFormPost}>
             {vacancy && vacancy.id && (<button type="button" className={styles.buttonDelete } onClick={() => handleDelete(vacancy.id)}><BsTrash /> <span>Excluir</span></button>)}
