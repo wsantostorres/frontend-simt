@@ -224,8 +224,8 @@
     width: 80px;
     height: 80px;
     position: fixed;
-    top: 80vh;
-    right: 20vw;
+    top: 88vh;
+    right: 10vw;
     color: white;
     font-size: 28px;
     background-color: #127822;
@@ -244,34 +244,17 @@
 }
 
 /* responsive */
-@media(max-width: 1600px){
-    .buttonNewPublish{
-        right: 10vw;
-    }
-}
-
 @media(max-width: 1368px){
     .buttonNewPublish{
         width: 60px;
         height: 60px;
         font-size: 24px;
-        right: 10vw;
     }
 }
 
 @media(max-width: 1200px){
     .pageHome > nav > div{
         max-width: 992px;
-    }
-
-    .buttonNewPublish{
-        right: 5vw;
-    }
-}
-
-@media(max-width: 1000px){
-    .buttonNewPublish{
-        right: 2vw;
     }
 }
 
@@ -323,8 +306,6 @@
     .buttonNewPublish{
         width: 50px;
         height: 50px;
-        top: 88vh;
-        right: 10vw;
         font-size: 18px;
     }
 }
