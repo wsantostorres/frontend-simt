@@ -302,13 +302,6 @@
         margin-top: 24px;
         margin-left: 8px;
     }
-
-    .buttonNewPublish{
-        width: 50px;
-        height: 50px;
-        font-size: 18px;
-        top: 88vh;
-    }
 }
 
 @media(max-width: 500px){
