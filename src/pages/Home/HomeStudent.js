@@ -61,12 +61,14 @@ const HomeStudent = () => {
         let div = e.target.parentNode;
         div.style.borderColor = "#127822";
         div.style.outlineColor = "#127822";
+        document.getElementById("iconSearch").style.color = "#127822";
     }
 
     const inputBlur = (e) => {
         let div = e.target.parentNode;
         div.style.borderColor = "#777";
         div.style.outlineColor  = "transparent";
+        document.getElementById("iconSearch").style.color = "#777";
     }
 
   return (
@@ -76,7 +78,7 @@ const HomeStudent = () => {
                 <div>
                     <Link><img src="/logo.svg" alt="Home"/></Link>
                     <form onSubmit={handleSearch} className={styles.inputSearchContainer}>
-                        <button type='submit'><BsSearch /></button>
+                        <button type='submit' id="iconSearch"><BsSearch /></button>
                         <input type="text" 
                         placeholder="Buscar" 
                         onFocus={inputfocus} 

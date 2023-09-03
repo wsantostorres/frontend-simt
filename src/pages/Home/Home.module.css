@@ -224,7 +224,7 @@
     width: 80px;
     height: 80px;
     position: fixed;
-    top: 88vh;
+    top: 85vh;
     right: 10vw;
     color: white;
     font-size: 28px;
@@ -307,6 +307,7 @@
         width: 50px;
         height: 50px;
         font-size: 18px;
+        top: 88vh;
     }
 }
 
