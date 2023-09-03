@@ -57,7 +57,7 @@ export const AuthContextProvider = ({children}) => {
     try{
       const tokenResp = await responseAuthentication.json();
       const dataUserSUAP = await getDataUserSuap(tokenResp.access);
-      const dataUserSIMT = await getDataUserSimt(tokenResp.access); 
+      const dataUserSIMT = await getDataUserSimt(tokenResp.access);
 
       if(dataUserSUAP.tipoVinculo === "Aluno"){
 
@@ -100,6 +100,8 @@ export const AuthContextProvider = ({children}) => {
 
       }else{
         setError("Você não possui um vínculo válido.")
+        setLoading(false)
+        return;
       }
 
       setError("") // clear error if login has occurred
