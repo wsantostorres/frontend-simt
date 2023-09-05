@@ -9,7 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 export const useFetchVacancies = () => {
 
   // data hooks
-  const { setStudentVacancies } = useAuth();
+  const { studentVacancies, setStudentVacancies } = useAuth();
   const { setVacancyMessage } = useMessage();
 
   // states
@@ -189,7 +189,12 @@ export const useFetchVacancies = () => {
     .then((response) => {
       if(response.status === 200){
         setVacancyMessage({msg: "Participação confirmada com sucesso.", type: "send-resume-success"})
-        setStudentVacancies((prevVacanciesIdsStudent) => [...prevVacanciesIdsStudent, vacancyId])
+        if(studentVacancies !== null && studentVacancies !== undefined){
+          setStudentVacancies((prevVacanciesIdsStudent) => [...prevVacanciesIdsStudent, vacancyId])
+        }else{
+          let arrayVacanciesAssistant = [vacancyId]
+          setStudentVacancies(arrayVacanciesAssistant)
+        }
         setVacancyLoading(false);
       }else if(response.status === 409){
         setVacancyMessage({msg: "Você já está participando desta vaga.", type: "send-resume-conflict"})
