@@ -231,9 +231,11 @@ export const useFetchVacancies = () => {
         window.URL.revokeObjectURL(url);
         setVacancyMessage({msg: "Parabéns! Seu download está pronto.", type: "download-resume-success"})
         setVacancyLoading(false)
-      }else{
+      }else if(response.status === 404){
         setVacancyMessage({msg: "Ninguem participou desta vaga ainda.", type: "download-resume-void"})
         setVacancyLoading(false)
+      }else{
+        throw new Error('Erro com o servidor');
       }
     }).catch((err) => {
       setVacancyMessage({msg: "Não foi possível baixar currículos desta vaga.", type: "download-resume-error"})
