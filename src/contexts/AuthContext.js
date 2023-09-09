@@ -202,7 +202,7 @@ export const AuthContextProvider = ({children}) => {
 }, [getDataUserSimt, verifyToken, refreshToken])
 
   return (
-    <AuthContext.Provider value={{ token, id, name, bondType, course, resumeId, studentVacancies, setStudentVacancies, error, loading, login, logout }}>
+    <AuthContext.Provider value={{ token, id, name, bondType, course, resumeId, setResumeId, studentVacancies, setStudentVacancies, error, loading, login, logout }}>
         {children}
     </AuthContext.Provider>
   )

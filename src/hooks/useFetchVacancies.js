@@ -199,6 +199,9 @@ export const useFetchVacancies = () => {
       }else if(response.status === 409){
         setVacancyMessage({msg: "Você já está participando desta vaga.", type: "send-resume-conflict"})
         setVacancyLoading(false);
+      }else if(response.status === 423){
+        setVacancyMessage({msg: "Cadastre seu currículo e tente novamente.", type: "send-resume-conflict"})
+        setVacancyLoading(false);
       }else{
         throw new Error('Erro com o servidor');
       }

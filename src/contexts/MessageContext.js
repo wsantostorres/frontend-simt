@@ -6,17 +6,19 @@ export const MessageContextProvider = ({children}) => {
 
     const [vacancyMessage, setVacancyMessage] = useState("");
     const [courseMessage, setCourseMessage] = useState("");
+    const [resumeMessage, setResumeMessage] = useState("");
 
     useEffect(() => {
-        if(vacancyMessage.type === "success"){
+        if(vacancyMessage.type === "success" || resumeMessage.type === "success" ){
             const timer = setTimeout(() => {
                 setVacancyMessage("");
+                setResumeMessage("");
             }, 3000)
             return () => clearTimeout(timer);
         }
-    }, [vacancyMessage])
+    }, [vacancyMessage, resumeMessage])
 
-    return (<MessageContext.Provider value={{ vacancyMessage, setVacancyMessage, courseMessage, setCourseMessage }}>
+    return (<MessageContext.Provider value={{ vacancyMessage, setVacancyMessage, courseMessage, setCourseMessage, resumeMessage, setResumeMessage}}>
         {children}
     </MessageContext.Provider>
     )
