@@ -17,6 +17,7 @@ export const AuthContextProvider = ({children}) => {
   const [name, setName] = useState();
   const [bondType, setBondType] = useState();
   const [course, setCourse] = useState();
+  const [resumeId, setResumeId] = useState(null);
   const [studentVacancies, setStudentVacancies] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState();
@@ -53,7 +54,7 @@ export const AuthContextProvider = ({children}) => {
       return;
     }
 
-    // save or update user
+    // save user
     try{
       const tokenResp = await responseAuthentication.json();
       const dataUserSUAP = await getDataUserSuap(tokenResp.access);
@@ -78,6 +79,7 @@ export const AuthContextProvider = ({children}) => {
         setName(dataUserSUAP.nomeCompleto)
         setBondType(dataUserSUAP.tipoVinculo)
         setCourse(dataUserSUAP.curso)
+        setResumeId(dataUserSIMT.resumeId)
         setStudentVacancies(dataUserSIMT.vacanciesIds)
         
       }else if(dataUserSUAP.tipoVinculo === "Servidor"){
@@ -120,6 +122,8 @@ export const AuthContextProvider = ({children}) => {
     setName("")
     setBondType("")
     setCourse("")
+    setResumeId(null)
+    setStudentVacancies(null)
   }
 
   useEffect(() => {
@@ -138,6 +142,7 @@ export const AuthContextProvider = ({children}) => {
                 setToken(tokenStoraged);
                 setName(dataUserSIMT.fullName);
                 setBondType(dataUserSIMT.bondType);
+                setResumeId(dataUserSIMT.resumeId)
 
                 if(dataUserSIMT.course !== ""){
                   setCourse(dataUserSIMT.course);
@@ -167,6 +172,7 @@ export const AuthContextProvider = ({children}) => {
                     setToken(newToken);
                     setName(dataUserSIMT.fullName);
                     setBondType(dataUserSIMT.bondType);
+                    setResumeId(dataUserSIMT.resumeId)
 
                     if(dataUserSIMT.course !== ""){
                       setCourse(dataUserSIMT.course);
@@ -196,7 +202,7 @@ export const AuthContextProvider = ({children}) => {
 }, [getDataUserSimt, verifyToken, refreshToken])
 
   return (
-    <AuthContext.Provider value={{ token, id, name, bondType, course, studentVacancies, setStudentVacancies, error, loading, login, logout }}>
+    <AuthContext.Provider value={{ token, id, name, bondType, course, resumeId, studentVacancies, setStudentVacancies, error, loading, login, logout }}>
         {children}
     </AuthContext.Provider>
   )
