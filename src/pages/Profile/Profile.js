@@ -7,6 +7,7 @@ import styles from './Profile.module.css';
 
 import { IoMdArrowRoundBack } from 'react-icons/io'
 import { LuSave } from 'react-icons/lu';
+import { BsPlusLg } from 'react-icons/bs';
 
 import { useMessage } from "../../contexts/MessageContext";
 
@@ -304,8 +305,8 @@ const Profile = () => {
             </div>
           ))}
           <br />
-          <button className="btn btn-success" type="button" onClick={addSkill}>
-            Adicionar Habilidade
+          <button className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addSkill}>
+          < BsPlusLg /> Habilidade
         </button>
         </div>
         <div>
@@ -352,8 +353,8 @@ const Profile = () => {
             </div>
           ))}
           <br />
-          <button className="btn btn-success" type="button" onClick={addAcademic}>
-            Adicionar Formação Acadêmica
+          <button className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addAcademic}>
+          < BsPlusLg /> Formação 
         </button>
         </div>
         <div>
@@ -400,8 +401,8 @@ const Profile = () => {
             </div>
           ))}
           <br />
-          <button className="btn btn-success" type="button" onClick={addProject}>
-            Adicionar Projeto
+          <button className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addProject}>
+          < BsPlusLg /> Projeto
           </button>
         </div>
         <div>
@@ -448,11 +449,13 @@ const Profile = () => {
             </div>
           ))}
           <br />
-          <button className="btn btn-success" type="button" onClick={addExperience}>
-            Adicionar Experiência
+          <button className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addExperience}>
+          < BsPlusLg /> Experiência
           </button>
         </div>
-        <button type="submit" className={styles.buttonSave}><LuSave /> Salvar</button>
+        <div className="d-flex justify-content-end mt-5">
+          <button type="submit" className={styles.buttonSave}><LuSave /> Salvar</button>
+        </div>
       </form>
     </div>
   )

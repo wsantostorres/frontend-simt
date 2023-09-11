@@ -10,7 +10,7 @@ import styles from './Home.module.css';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { BsSearch } from 'react-icons/bs';
 import { IoExitOutline } from 'react-icons/io5';
-import { FiUser } from 'react-icons/fi';
+import { CgFileDocument } from 'react-icons/cg';
 
 import VacancyCard from "../../components/VacancyCard";
 
@@ -109,7 +109,7 @@ const HomeStudent = () => {
                         </li>
                         <li><hr className="dropdown-divider"/></li>
                         <li className={styles.linkProfile}>
-                            <Link to="/perfil"><FiUser /> Perfil</Link>
+                            <Link to="/perfil"><CgFileDocument /> Currículo</Link>
                         </li>
                         <li className={styles.buttonLogout}>
                             <button onClick={logout}><IoExitOutline /> Sair</button>

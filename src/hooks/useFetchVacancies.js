@@ -188,7 +188,7 @@ export const useFetchVacancies = () => {
     )
     .then((response) => {
       if(response.status === 200){
-        setVacancyMessage({msg: "Participação confirmada com sucesso.", type: "send-resume-success"})
+        setVacancyMessage({msg: "Currículo enviado com sucesso.", type: "send-resume-success"})
         if(studentVacancies !== null && studentVacancies !== undefined){
           setStudentVacancies((prevVacanciesIdsStudent) => [...prevVacanciesIdsStudent, vacancyId])
         }else{
@@ -197,7 +197,7 @@ export const useFetchVacancies = () => {
         }
         setVacancyLoading(false);
       }else if(response.status === 409){
-        setVacancyMessage({msg: "Você já está participando desta vaga.", type: "send-resume-conflict"})
+        setVacancyMessage({msg: "O seu currículo já foi enviado para esta vaga.", type: "send-resume-conflict"})
         setVacancyLoading(false);
       }else if(response.status === 423){
         setVacancyMessage({msg: "Cadastre seu currículo e tente novamente.", type: "send-resume-conflict"})
@@ -207,7 +207,7 @@ export const useFetchVacancies = () => {
       }
     })
     .catch((err) => {
-      setVacancyMessage({msg: "Não foi possível participar desta vaga.", type: "send-resume-error"})
+      setVacancyMessage({msg: "Não foi possível enviar o currículo.", type: "send-resume-error"})
       setVacancyLoading(false);
     })
   }

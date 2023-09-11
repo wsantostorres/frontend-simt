@@ -9,7 +9,7 @@ import styles from './VancancyCard.module.css';
 import parse from 'html-react-parser';
 
 import { FiDownloadCloud } from 'react-icons/fi';
-import { BsPlusLg } from 'react-icons/bs';
+import { AiOutlineSend } from 'react-icons/ai'
 import { BsCheckLg } from 'react-icons/bs';
 import { BiEdit } from 'react-icons/bi';
 
@@ -114,9 +114,9 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
                
                {bondType === "Aluno" && (
                     isApplied ? (
-                        <button type="button" className={styles.resumeSent}><BsCheckLg /> <span>Você já está participando</span></button>
+                        <button type="button" className={styles.resumeSent}><BsCheckLg /> <span>Currículo Enviado</span></button>
                     ) : (
-                        <button className={styles.buttonSendResume} data-bs-toggle="modal" data-bs-target="#modalVacancy" onClick={async () => { await sendResumeToVacancy(studentId, id) }}><BsPlusLg /> <span>Participar</span></button>
+                        <button className={styles.buttonSendResume} data-bs-toggle="modal" data-bs-target="#modalVacancy" onClick={async () => { await sendResumeToVacancy(studentId, id) }}><AiOutlineSend /> <span>Enviar Currículo</span></button>
                     )
                 )}
             </div>

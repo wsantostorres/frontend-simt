@@ -148,9 +148,9 @@
 .linkProfile > a{
     display: block;
     padding: 3px;
-    background-color: #287C59;
+    background-color: #353535;
     color: #fff;
-    border: 1px solid #287C59;
+    border: 1px solid #353535;
     border-radius: 4px;
     transition: .5s ease-in-out;
     display: flex;
@@ -159,7 +159,7 @@
 }
 
 .linkProfile > a:hover{
-    background-color: #127822;
+    background-color: #222;
 }
 
 .linkProfile > a > svg{

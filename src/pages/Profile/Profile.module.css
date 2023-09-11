@@ -101,6 +101,10 @@
     margin-right: 3px;
 }
 
+.addButtons > svg{
+    font-size: 20px;
+}
+
 
 /* responsive */
 @media(max-width: 992px){
