@@ -87,7 +87,7 @@ export const useFetchResumes = () => {
       .then( async (response) => {
         if (response.status === 200) {
           setResumeMessage({msg: "Currículo atualizado com sucesso.", type: "success" })
-          redirect("/perfil");
+          redirect("/curriculo");
           setResumeLoading(false);
         }else{
           throw new Error('Erro com o servidor');

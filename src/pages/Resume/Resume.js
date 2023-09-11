@@ -3,7 +3,7 @@ import { useFetchResumes } from "../../hooks/useFetchResumes";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import styles from './Profile.module.css';
+import styles from './Resume.module.css';
 
 import { IoMdArrowRoundBack } from 'react-icons/io'
 import { LuSave } from 'react-icons/lu';
@@ -12,17 +12,20 @@ import { BsPlusLg } from 'react-icons/bs';
 import { useMessage } from "../../contexts/MessageContext";
 
 import Input from "../../components/Input";
+import InputMask from "react-input-mask";
 import Loading from '../../components/Loading';
 import { useAuth } from "../../contexts/AuthContext";
 
-const Profile = () => {
+const Resume = () => {
 
-  document.title = "Meu Perfil";
+  document.title = "Meu Currículo";
   const { postResume, putResume, getResume, resumeLoading } = useFetchResumes();
   const { id:studentId, resumeId } = useAuth();
   const { resumeMessage, setResumeMessage } = useMessage();
 
   // state
+  const [titleErrorValidation, setTitleErrorValidation] = useState("");
+  const [validation, setValidation] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [resume, setResume] = useState({
@@ -84,9 +87,22 @@ const Profile = () => {
     }
   }, [resumeMessage, setResumeMessage, setErrorMessage, setSuccessMessage]);
 
-  // handle
+  // handleChange
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    const errors = validateFields();
+
+    if (Object.keys(errors).length > 0) {
+      setTitleErrorValidation("Verifique os campos do formulário.")
+      setValidation(errors);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    setTitleErrorValidation("")
+    setValidation({});
+
     resume.skills = skills;
     resume.academics = academics;
     resume.projects = projects;
@@ -205,6 +221,47 @@ const Profile = () => {
     }
   };
 
+  // validation
+  const validateFields = () => {
+    const errors = {};
+  
+    // Validar número de telefone
+    if (!resume.contact.phone || resume.contact.phone.length < 15) {
+      errors.phone = "Número de telefone inválido.";
+    }
+  
+    // Validar email
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i; // Expressão regular para validar email
+    if (!resume.contact.email || !emailPattern.test(resume.contact.email)) {
+      errors.email = "Email inválido.";
+    }
+  
+    // Validar nome da rua
+    if (!resume.address.street || resume.address.street.trim() === "") {
+      errors.street = "O nome da rua é obrigatório.";
+    }
+  
+    // Validar número da casa
+    if (!resume.address.number) {
+      errors.number = "O número da casa é obrigatório.";
+    }
+  
+    // Validar cidade
+    if (!resume.address.city || resume.address.city.trim() === "") {
+      errors.city = "A cidade é obrigatória.";
+    }
+
+    if(!resume.objectiveDescription || resume.objectiveDescription.trim() === ""){
+      errors.objectiveDescription = "O objetivo é obrigatório.";
+    }else if(resume.objectiveDescription.length > 500){
+      errors.objectiveDescription = "O objetivo não pode ter mais que 500 caracteres.";
+    }    
+  
+    return errors;
+  };
+  
+
+
   // loading
   if(resumeLoading){
     return (<Loading />)
@@ -219,6 +276,7 @@ const Profile = () => {
         </div>
       </nav>
       <form onSubmit={handleSubmit}>
+      {titleErrorValidation && (<p className="alert alert-danger p-2 m-0 mb-3 text-center">{titleErrorValidation}</p>)}
       {errorMessage && errorMessage.type === "error" && (<p className="alert alert-danger p-2 m-0 mb-3 text-center">{errorMessage.msg}</p>)}
       {successMessage && successMessage.type === "success" && (<p className="alert alert-success p-2 m-0 mb-3 text-center">{successMessage.msg}</p>)}
         <h1 className="fw-bold">Currículo</h1>
@@ -231,17 +289,17 @@ const Profile = () => {
                 handleChange={handleOnChange}
                 valueLabel="Email: " 
                 value={resume.contact.email} 
-                messageError="" 
-                validationClass="" />
+                messageError={validation && validation.email}   
+                validationClass={validation && validation.email ? 'is-invalid' : ''} />
           <br />
-          <Input name="contact.phone"
-                type="text" 
-                placeholder="Digite seu numero de telefone" 
-                handleChange={handleOnChange}
-                valueLabel="Nº Telefone: " 
-                value={resume.contact.phone} 
-                messageError="" 
-                validationClass="" />
+          <InputMask mask="(99) 99999-9999" // Defina a máscara desejada
+                name="contact.phone"
+                type="text"
+                placeholder="Digite seu número de telefone"
+                onChange={handleOnChange}
+                value={resume.contact.phone}
+                className={`form-control ${validation && validation.phone ? "is-invalid" : ""}`} />
+                {validation && validation.phone && (<small className="invalid-feedback d-block fw-bold" >{validation.phone}</small>)}
           <br />
           <Input name="contact.linkedin"
                 type="text" 
@@ -260,8 +318,8 @@ const Profile = () => {
                 handleChange={handleOnChange}
                 valueLabel="Rua: " 
                 value={resume.address.street} 
-                messageError="" 
-                validationClass="" />
+                messageError={validation && validation.street}   
+                validationClass={validation && validation.street ? 'is-invalid' : ''} />
           <br />
           <Input name="address.number"
                 type="number" 
@@ -269,8 +327,8 @@ const Profile = () => {
                 handleChange={handleOnChange}
                 valueLabel="Número: " 
                 value={resume.address.number} 
-                messageError="" 
-                validationClass="" />
+                messageError={validation && validation.number}  
+                validationClass={validation && validation.number ? 'is-invalid' : ''} />
           <br />
           <Input name="address.city"
                 type="text" 
@@ -278,15 +336,17 @@ const Profile = () => {
                 handleChange={handleOnChange}
                 valueLabel="Cidade: " 
                 value={resume.address.city} 
-                messageError="" 
-                validationClass="" />
+                messageError={validation && validation.city} 
+                validationClass={validation && validation.city ? 'is-invalid' : ''} />
         </div>
         <div>
           <h2 className="fw-bold">Objetivo</h2>
           <label htmlFor="objectiveDescription">Objetivo: </label>
-          <textarea name="objectiveDescription" id="objectiveDescription" className="form-control"
+          <textarea name="objectiveDescription" id="objectiveDescription" 
+          className={validation && validation.objectiveDescription ? `form-control is-invalid` : `form-control`}
           placeholder="Digite seu objetivo" onChange={(e) => handleOnChange(e)} 
-          value={resume.objectiveDescription}></textarea>
+          value={resume.objectiveDescription} rows="5"></textarea>
+          {validation && validation.objectiveDescription && (<small className="invalid-feedback d-block fw-bold" >{validation.objectiveDescription}</small>)}
         </div>
         <div>
           <h2 className="fw-bold">Habilidades</h2>
@@ -461,4 +521,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default Resume

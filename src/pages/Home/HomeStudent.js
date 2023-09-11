@@ -109,7 +109,7 @@ const HomeStudent = () => {
                         </li>
                         <li><hr className="dropdown-divider"/></li>
                         <li className={styles.linkProfile}>
-                            <Link to="/perfil"><CgFileDocument /> Currículo</Link>
+                            <Link to="/curriculo"><CgFileDocument /> Currículo</Link>
                         </li>
                         <li className={styles.buttonLogout}>
                             <button onClick={logout}><IoExitOutline /> Sair</button>

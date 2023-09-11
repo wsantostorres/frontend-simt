@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 import HomeStudent from '../pages/Home/HomeStudent';
 import HomeServer from '../pages/Home/HomeServer';
-import Profile from '../pages/Profile/Profile';
+import Resume from '../pages/Resume/Resume';
 import Post from "../pages/Post/Post";
 import Error from "../pages/Error/Error";
 
@@ -16,9 +16,7 @@ const AuthRoutes = () => {
         {bondType === "Aluno" && (
           <>
             <Route path="/" element={<HomeStudent />} />
-            <Route path="/perfil" element={<Profile/>} />
-            <Route path="/publicacao" element={<Post />} />
-            <Route path="/publicacao/:id" element={<Post />} />
+            <Route path="/curriculo" element={<Resume />} />
             <Route path="*" element={<Error />} />
           </>
         )}
