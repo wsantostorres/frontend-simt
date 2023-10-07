@@ -1,8 +1,7 @@
 FROM  node:18.17.0
 
-WORKDIR /front-end/simt/
+WORKDIR /frontend/simt/
 
-# o "./" se refere ao diretorio workdir
 COPY package*.json ./
 
 RUN npm install

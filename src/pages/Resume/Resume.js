@@ -466,7 +466,7 @@ const Resume = () => {
           </button>
         </div>
         <div>
-          <h2 className="fw-bold">Experiencias</h2>
+          <h2 className="fw-bold">Experiências</h2>
           {experiences.map((experience, index) => (
             <div key={index}>
               <p className="fw-bold">{`Experiência ${index + 1}`}:</p>
