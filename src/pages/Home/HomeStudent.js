@@ -12,7 +12,7 @@ import { BsSearch } from 'react-icons/bs';
 import { IoExitOutline } from 'react-icons/io5';
 import { CgFileDocument } from 'react-icons/cg';
 
-import VacancyCard from "../../components/VacancyCard";
+import VacancyCard from "./VacancyCard";
 
 const HomeStudent = () => {
 
@@ -119,6 +119,10 @@ const HomeStudent = () => {
             </div>
         </nav>
         <main>
+            <div className="mt-5">
+                <h2 className="fw-bold">Todas as Vagas</h2>
+                <hr />
+            </div>
             {searchText && (
                 <h4>Exibindo resultados para: <span>{searchText}</span></h4>
             )}

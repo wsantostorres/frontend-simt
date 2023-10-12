@@ -264,6 +264,12 @@
     }
 }
 
+@media(max-width: 768px){
+    .pageHome > main > div:first-child{
+        margin: 0 .5rem;
+    }
+}
+
 @media(max-width: 600px){
     .pageHome > nav > div{
         max-width: max-content;

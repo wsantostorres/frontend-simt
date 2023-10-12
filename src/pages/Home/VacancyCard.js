@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useFetchVacancies } from "../hooks/useFetchVacancies";
-import { useMessage } from "../contexts/MessageContext";
-import { useAuth } from "../contexts/AuthContext";
+import { useFetchVacancies } from "../../hooks/useFetchVacancies";
+import { useMessage } from "../../contexts/MessageContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 import styles from './VancancyCard.module.css';
@@ -85,7 +85,7 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
   return (
     <>
         <div className={styles.vacancyCardContainer}>
-            <h2>{title}</h2>
+            <h3>{title}</h3>
             <div>
                 {parse(description)}
             </div>
@@ -145,7 +145,11 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
                     }
                     {
                         !vacancyLoading && message && message.type === "send-resume-conflict" && 
-                        (<p className="alert alert-warning">{message.msg}</p>)
+                        (<div> 
+                            <p className="alert alert-warning">{message.msg}
+                                <span className="d-block fw-bold" data-bs-dismiss="modal"><Link to="/curriculo">Cadastrar Currículo</Link></span>
+                            </p>
+                        </div>)
                     }
                     {/* error */}
                     {
