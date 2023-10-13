@@ -8,6 +8,7 @@ import styles from './Resume.module.css';
 import { IoMdArrowRoundBack } from 'react-icons/io'
 import { LuSave } from 'react-icons/lu';
 import { BsPlusLg } from 'react-icons/bs';
+import { FiDownloadCloud } from 'react-icons/fi';
 
 import { useMessage } from "../../contexts/MessageContext";
 
@@ -19,7 +20,7 @@ import { useAuth } from "../../contexts/AuthContext";
 const Resume = () => {
 
   document.title = "Meu Currículo";
-  const { postResume, putResume, getResume, resumeLoading } = useFetchResumes();
+  const { postResume, putResume, getResume, downloadResumePDF, resumeLoading } = useFetchResumes();
   const { id:studentId, resumeId } = useAuth();
   const { resumeMessage, setResumeMessage } = useMessage();
 
@@ -259,8 +260,6 @@ const Resume = () => {
   
     return errors;
   };
-  
-
 
   // loading
   if(resumeLoading){
@@ -292,7 +291,7 @@ const Resume = () => {
                 messageError={validation && validation.email}   
                 validationClass={validation && validation.email ? 'is-invalid' : ''} />
           <br />
-          <InputMask mask="(99) 99999-9999" // Defina a máscara desejada
+          <InputMask mask="(99) 99999-9999"
                 name="contact.phone"
                 type="text"
                 placeholder="Digite seu número de telefone"
@@ -513,7 +512,8 @@ const Resume = () => {
           < BsPlusLg /> Experiência
           </button>
         </div>
-        <div className="d-flex justify-content-end mt-5">
+        <div className="d-flex justify-content-end mt-5 gap-3">
+          <button className="btn btn-warning px-3" onClick={async() => { await downloadResumePDF(studentId) }} ><FiDownloadCloud/><span></span></button>
           <button type="submit" className={styles.buttonSave}><LuSave /> Salvar</button>
         </div>
       </form>

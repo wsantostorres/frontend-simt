@@ -98,7 +98,39 @@ export const useFetchResumes = () => {
         setResumeLoading(false);
       });
     };
+
+    const downloadResumePDF = async(studentId) => {
+      setResumeLoading(true);
+      return fetch(`${url}/resumes/download/${studentId}`, {
+          method: 'GET',
+          responseType: 'arraybuffer',
+      }).then(async (response) => {
+        if(response.status === 200){
+          let data = await response.arrayBuffer();
+          let blob = new Blob([data], { type: 'application/pdf' });
+          let url = window.URL.createObjectURL(blob);
+          let link = document.createElement('a');
+          link.href = url;
+          let resumeFile = `curriculo.pdf`;
+          link.setAttribute('download', resumeFile);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          setResumeMessage({msg:"", type:"success"});
+          setResumeLoading(false);
+        }else if(response.status === 404){
+          setResumeMessage({msg:"Cadastre seu currículo primeiro e tente novamente!", type:"error"});
+          setResumeLoading(false);
+        }else{
+          throw new Error('Erro com o servidor');
+        }
+      }).catch((err) => {
+        setResumeMessage({msg:"Não foi possível baixar o currículo.", type:"error"});
+        setResumeLoading(false);
+      });
+    }
    
 
-  return { postResume, putResume, getResume, resumeLoading }
+  return { postResume, putResume, getResume, downloadResumePDF, resumeLoading }
 }
