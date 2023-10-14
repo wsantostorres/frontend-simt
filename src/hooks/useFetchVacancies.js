@@ -232,7 +232,7 @@ export const useFetchVacancies = () => {
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-        setVacancyMessage({msg: "Parabéns! Seu download está pronto.", type: "download-resume-success"})
+        setVacancyMessage({msg: "O seu download está pronto.", type: "download-resume-success"})
         setVacancyLoading(false)
       }else if(response.status === 404){
         setVacancyMessage({msg: "Ninguem participou desta vaga ainda.", type: "download-resume-void"})

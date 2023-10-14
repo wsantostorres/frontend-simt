@@ -117,7 +117,7 @@ export const useFetchResumes = () => {
           link.click();
           document.body.removeChild(link);
           window.URL.revokeObjectURL(url);
-          setResumeMessage({msg:"", type:"success"});
+          setResumeMessage({msg:"O seu currículo foi gerado com sucesso", type:"success"});
           setResumeLoading(false);
         }else if(response.status === 404){
           setResumeMessage({msg:"Cadastre seu currículo primeiro e tente novamente!", type:"error"});
