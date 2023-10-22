@@ -97,7 +97,7 @@
 }
 
 .textDropdown > div:first-child{
-    width: 100px;
+    max-width: 100px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
