@@ -87,7 +87,7 @@ const HomeServer = () => {
                     </form>
                 </div>
                 <div>
-                    <div className="dropdown">
+                    <div id="btn-dropdown-user" className="dropdown">
                         <button className={styles.buttonDropdown} data-bs-toggle="dropdown" aria-expanded="false">
                             <div>{initialLetter(name)}</div>
                             <div className={styles.textDropdown}>
@@ -110,7 +110,7 @@ const HomeServer = () => {
                             </li>
                             <li><hr className="dropdown-divider"/></li>
                             <li className={styles.buttonLogout}>
-                                <button onClick={logout}><IoExitOutline /> Sair</button>
+                                <button id="btn-logout" onClick={logout}><IoExitOutline /> Sair</button>
                             </li>
                         </ul>
                     </div>
@@ -144,7 +144,7 @@ const HomeServer = () => {
                     afternoon={vacancy.afternoon} 
                     night={vacancy.night} />
             ))}
-            <Link to="/publicacao" className={styles.buttonNewPublish}><BsPlusLg/></Link>
+            <Link id="link-new-vacancy" to="/publicacao" className={styles.buttonNewPublish}><BsPlusLg/></Link>
         </main>
     </div>
   )

@@ -107,16 +107,16 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
             <div className={styles.buttonsVacancy}>
                 {bondType === "Servidor" && (
                     <>
-                        <Link to={`/publicacao/${id}`}><BiEdit/> <span>Editar</span></Link>
-                        <button className={styles.buttonDownloadResumes} data-bs-toggle="modal" data-bs-target="#modalVacancy" onClick={async() => { await downloadResumes(id, title) }} ><FiDownloadCloud/><span>Baixar Currículos</span></button>
+                        <Link id="link-edit-vacancy" to={`/publicacao/${id}`}><BiEdit/> <span>Editar</span></Link>
+                        <button id="btn-download-resumes" className={styles.buttonDownloadResumes} data-bs-toggle="modal" data-bs-target="#modalVacancy" onClick={async() => { await downloadResumes(id, title) }} ><FiDownloadCloud/><span>Baixar Currículos</span></button>
                     </>
                 )}
                
                {bondType === "Aluno" && (
                     isApplied ? (
-                        <button type="button" className={styles.resumeSent}><BsCheckLg /> <span>Currículo Enviado</span></button>
+                        <button id="btn-send-resume-ok" type="button" className={styles.resumeSent}><BsCheckLg /> <span>Currículo Enviado</span></button>
                     ) : (
-                        <button className={styles.buttonSendResume} data-bs-toggle="modal" data-bs-target="#modalVacancy" onClick={async () => { await sendResumeToVacancy(studentId, id) }}><AiOutlineSend /> <span>Enviar Currículo</span></button>
+                        <button id="btn-send-resume" className={styles.buttonSendResume} data-bs-toggle="modal" data-bs-target="#modalVacancy" onClick={async () => { await sendResumeToVacancy(studentId, id) }}><AiOutlineSend /> <span>Enviar Currículo</span></button>
                     )
                 )}
             </div>
@@ -147,7 +147,7 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
                         !vacancyLoading && message && message.type === "send-resume-conflict" && 
                         (<div> 
                             <p className="alert alert-warning">{message.msg}
-                                <span className="d-block fw-bold" data-bs-dismiss="modal"><Link to="/curriculo">Cadastrar Currículo</Link></span>
+                                <span className="d-block fw-bold" data-bs-dismiss="modal"><Link id="link-resume-register" to="/curriculo">Cadastrar Currículo</Link></span>
                             </p>
                         </div>)
                     }
@@ -164,7 +164,7 @@ const VacancyCard = ({id, title, description = "", date, type, morning, afternoo
                     {vacancyLoading && 
                     <button type="button" className={styles.buttonCloseModalDisabled}>Aguarde...</button> }
                     {!vacancyLoading && 
-                    <button type="button" className={styles.buttonCloseModal} data-bs-dismiss="modal">Voltar</button>}
+                    <button id="btn-close-modal" type="button" className={styles.buttonCloseModal} data-bs-dismiss="modal">Voltar</button>}
                 </div>
               </div>
             </div>

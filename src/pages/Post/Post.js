@@ -275,8 +275,8 @@ const Post = () => {
           {validation && (<small className="invalid-feedback d-block fw-bold" >{validation.courses}</small>)}
 
           <div className={styles.buttonsFormPost}>
-            {vacancy && vacancy.id && (<button type="button" className={styles.buttonDelete } onClick={() => handleDelete(vacancy.id)}><BsTrash /> <span>Excluir</span></button>)}
-            <button type="submit" className={styles.buttonSave } ><LuSave /> <span>Salvar</span></button>
+            {vacancy && vacancy.id && (<button id="btn-delete-vacancy" type="button" className={styles.buttonDelete } onClick={() => handleDelete(vacancy.id)}><BsTrash /> <span>Excluir</span></button>)}
+            <button id="btn-save-vacancy" type="submit" className={styles.buttonSave } ><LuSave /> <span>Salvar</span></button>
           </div>
       </form>
 

@@ -364,7 +364,7 @@ const Resume = () => {
             </div>
           ))}
           <br />
-          <button className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addSkill}>
+          <button id="btn-add-skill" className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addSkill}>
           < BsPlusLg /> Habilidade
         </button>
         </div>
@@ -412,7 +412,7 @@ const Resume = () => {
             </div>
           ))}
           <br />
-          <button className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addAcademic}>
+          <button id="btn-add-academic" className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addAcademic}>
           < BsPlusLg /> Formação 
         </button>
         </div>
@@ -460,7 +460,7 @@ const Resume = () => {
             </div>
           ))}
           <br />
-          <button className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addProject}>
+          <button id="btn-add-project" className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addProject}>
           < BsPlusLg /> Projeto
           </button>
         </div>
@@ -508,13 +508,13 @@ const Resume = () => {
             </div>
           ))}
           <br />
-          <button className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addExperience}>
+          <button id="btn-add-experience" className={`btn btn-success ${styles.addButtons}`} type="button" onClick={addExperience}>
           < BsPlusLg /> Experiência
           </button>
         </div>
         <div className="d-flex justify-content-end mt-5 gap-3">
-          <button className="btn btn-warning px-3" onClick={async() => { await downloadResumePDF(studentId) }} ><FiDownloadCloud/><span></span></button>
-          <button type="submit" className={styles.buttonSave}><LuSave /> Salvar</button>
+          <button id="btn-download-my-resume" className="btn btn-warning px-3" onClick={async() => { await downloadResumePDF(studentId) }} ><FiDownloadCloud/><span></span></button>
+          <button id="btn-save-resume" type="submit" className={styles.buttonSave}><LuSave /> Salvar</button>
         </div>
       </form>
     </div>
