@@ -17,7 +17,7 @@ export const useFetchSuap = () => {
         return response;
     }
     
-    const getDataUserSuap = async (tokenToGetData) => {
+    const getDataUserSuap = useCallback(async (tokenToGetData) => {
         const response = await fetch(`${url}/api/v2/minhas-informacoes/meus-dados/`, {
           method: "GET",
           headers: {
@@ -29,19 +29,18 @@ export const useFetchSuap = () => {
         const dataUserSUAP = await response.json();
     
         let data = {
-            "id": dataUserSUAP.id,
-            "matricula": dataUserSUAP.matricula,
-            "nomeCompleto": dataUserSUAP.vinculo.nome,
-            "tipoVinculo": dataUserSUAP.tipo_vinculo,
-            "curso": ""
+            "registration": dataUserSUAP.matricula,
+            "fullName": dataUserSUAP.vinculo.nome,
+            "bondType": dataUserSUAP.tipo_vinculo,
+            "course": ""
         }
     
         if(dataUserSUAP.curso !== null && dataUserSUAP.curso !== ""){
-            data.curso = dataUserSUAP.vinculo.curso;
+            data.course = dataUserSUAP.vinculo.curso;
         }
     
         return data;
-    }
+    }, [url])
     
     const verifyToken = useCallback(async (tokenToVerify) => {
         if(tokenToVerify){

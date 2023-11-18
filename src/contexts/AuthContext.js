@@ -31,10 +31,14 @@ export const AuthContextProvider = ({children}) => {
     }
 
     let responseAuthentication;
+    let tokenResponse;
+    let responseDataSuap;
+    let responseDataSimt;
 
     // authentication
     try{
       responseAuthentication = await authenticationSuap(data)
+      tokenResponse = await responseAuthentication.json();
       
       if(responseAuthentication.status === 401){
         setError("Credenciais inválidas.")
@@ -54,64 +58,55 @@ export const AuthContextProvider = ({children}) => {
       return;
     }
 
-    // save user
-    try{
-      const tokenResp = await responseAuthentication.json();
-      const dataUserSUAP = await getDataUserSuap(tokenResp.access);
-      const dataUserSIMT = await getDataUserSimt(tokenResp.access);
+    // get data suap
+    try {
+      responseDataSuap = await getDataUserSuap(tokenResponse.access)
+    } catch (error) {
+      setError("Não foi possível estabelecer conexão com o servidor.")
+      setLoading(false)
+      return;
+    }
 
-      if(dataUserSUAP.tipoVinculo === "Aluno"){
+    // verify user exists and save user
+    responseDataSimt = await getDataUserSimt(responseDataSuap.registration);
 
-        localStorage.setItem('tokenSUAP', JSON.stringify(tokenResp))
+    if(responseDataSimt !== null){
+      localStorage.setItem("tokenSUAP", JSON.stringify(tokenResponse))
+      setToken(tokenResponse)
+      setId(responseDataSimt.registration)
+      setName(responseDataSimt.fullName)
+      setBondType(responseDataSimt.bondType)
+      setCourse(responseDataSimt.course)
+      setResumeId(responseDataSimt.resumeId)
+      setStudentVacancies(responseDataSimt.vacanciesIds)
+    }else{
 
-        if(dataUserSIMT.bondType === undefined || dataUserSIMT.bondType === null){
-          let response = await saveUserSimt(dataUserSIMT.id, dataUserSUAP.matricula, dataUserSUAP.nomeCompleto, dataUserSUAP.tipoVinculo, dataUserSUAP.curso)
-          
-          if(response.status !== 201){
-            localStorage.removeItem('tokenSUAP');
-            setError("Não foi possível estabelecer conexão com o servidor.")
-            return;
-          }
-        }
+      try {
+        const responseSaveUserSimt = await saveUserSimt(
+          responseDataSuap.registration,
+          responseDataSuap.fullName,
+          responseDataSuap.bondType,
+          responseDataSuap.course
+        )
 
-        setToken(tokenResp)
-        setId(dataUserSIMT.id)
-        setName(dataUserSUAP.nomeCompleto)
-        setBondType(dataUserSUAP.tipoVinculo)
-        setCourse(dataUserSUAP.curso)
-        setResumeId(dataUserSIMT.resumeId)
-        setStudentVacancies(dataUserSIMT.vacanciesIds)
+        localStorage.setItem("tokenSUAP", JSON.stringify(tokenResponse))
+        setToken(tokenResponse)
+        setId(responseSaveUserSimt.registration)
+        setName(responseSaveUserSimt.fullName)
+        setBondType(responseSaveUserSimt.bondType)
+        setCourse(responseSaveUserSimt.course)
+        setResumeId(null)
+        setStudentVacancies(null)
         
-      }else if(dataUserSUAP.tipoVinculo === "Servidor"){
-        localStorage.setItem('tokenSUAP', JSON.stringify(tokenResp))
-
-        if(dataUserSIMT.bondType === undefined || dataUserSIMT.bondType === null){
-          let response = await saveUserSimt(dataUserSIMT.id, dataUserSUAP.matricula, dataUserSUAP.nomeCompleto, dataUserSUAP.tipoVinculo)
-
-          if(response.status !== 201){
-            localStorage.removeItem('tokenSUAP');
-            setError("Não foi possível estabelecer conexão com o servidor.")
-            return;
-          }
-        }
-
-        setToken(tokenResp.access)
-        setId(dataUserSIMT.id)
-        setName(dataUserSUAP.nomeCompleto)
-        setBondType(dataUserSUAP.tipoVinculo)
-
-      }else{
-        setError("Você não possui um vínculo válido.")
+      } catch (error) {
+        setError("Não foi possível estabelecer conexão com o servidor.")
         setLoading(false)
         return;
       }
+  
 
-      setError("") // clear error if login has occurred
-    }catch(err){
-      localStorage.removeItem('tokenSUAP');
-      setError("Não foi possível estabelecer conexão com o servidor.")
     }
-
+    
     setLoading(false)
   }
 
@@ -135,10 +130,11 @@ export const AuthContextProvider = ({children}) => {
 
             try{
               const status = await verifyToken(tokenStoraged.access);
-              const dataUserSIMT = await getDataUserSimt(tokenStoraged.access);
+              const responseDataSuap = await getDataUserSuap(tokenStoraged.access)
+              const dataUserSIMT = await getDataUserSimt(responseDataSuap.registration);
               
               if(status === 200){
-                setId(dataUserSIMT.id);
+                setId(dataUserSIMT.registration);
                 setToken(tokenStoraged);
                 setName(dataUserSIMT.fullName);
                 setBondType(dataUserSIMT.bondType);
@@ -167,8 +163,7 @@ export const AuthContextProvider = ({children}) => {
 
                     localStorage.setItem('tokenSUAP', JSON.stringify(newToken))
 
-                    const dataUserSIMT = await getDataUserSimt(newToken.access);
-                    setId(dataUserSIMT.id);
+                    setId(dataUserSIMT.registration);
                     setToken(newToken);
                     setName(dataUserSIMT.fullName);
                     setBondType(dataUserSIMT.bondType);
@@ -199,7 +194,8 @@ export const AuthContextProvider = ({children}) => {
         })()
     }
 
-}, [getDataUserSimt, verifyToken, refreshToken])
+}, [getDataUserSuap, getDataUserSimt, verifyToken, refreshToken])
+
 
   return (
     <AuthContext.Provider value={{ token, id, name, bondType, course, resumeId, setResumeId, studentVacancies, setStudentVacancies, error, loading, login, logout }}>

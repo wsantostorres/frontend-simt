@@ -5,31 +5,41 @@ export const useFetchUsers = () => {
 
     const url = apiSimt();
 
-    const getDataUserSimt = useCallback(async (tokenToGetData) => {
-        const response = await fetch(`${url}/user-data`, {
+    const getDataUserSimt = useCallback(async (id) => {
+
+      try {
+        const response = await fetch(`${url}/users/${id}`, {
           method: "GET",
           headers: {
-              "Authorization": `Baerer ${tokenToGetData}`,
               "Content-Type": "application/json",
           }
         })
-    
-        const dataUserSIMT = response.json();
+   
+        const dataUserSIMT = await response.json();
+
+        if(dataUserSIMT === null){
+          throw new Error("Error")
+        }
+
         return dataUserSIMT;
+
+      } catch (error) {
+        return null;
+      }
+        
     }, [url])
     
-    const saveUserSimt = async (id, registration, fullName, bondType, course) => {
+    const saveUserSimt = async (registration, fullName, bondType, course) => {
         if(bondType === "Aluno"){
     
           let data = {
-            id: id,
             registration: registration,
             fullName: fullName,
             bondType: bondType,
             course: course
           }
     
-          const response = await fetch(`${url}/students`, {
+          const response = await fetch(`${url}/users`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -37,17 +47,16 @@ export const useFetchUsers = () => {
             body: JSON.stringify(data)
           })
     
-          return response;
+          return await response.json();
         }else if(bondType === "Servidor"){
           
           let data = {
-            id: id,
             registration: registration,
             fullName: fullName,
             bondType: bondType
           }
     
-          const response = await fetch(`${url}/employees`, {
+          const response = await fetch(`${url}/users`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -55,7 +64,7 @@ export const useFetchUsers = () => {
             body: JSON.stringify(data)
           })
     
-          return response;
+          return await response.json();
     
         }else{
     
