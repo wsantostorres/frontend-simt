@@ -35,7 +35,7 @@ export const AuthContextProvider = ({children}) => {
     let responseDataSuap;
     let responseDataSimt;
 
-    // authentication
+    // autenticação
     try{
       responseAuthentication = await authenticationSuap(data)
       tokenResponse = await responseAuthentication.json();
@@ -58,7 +58,7 @@ export const AuthContextProvider = ({children}) => {
       return;
     }
 
-    // get data suap
+    // pegando dados do suap
     try {
       responseDataSuap = await getDataUserSuap(tokenResponse.access)
     } catch (error) {
@@ -67,7 +67,14 @@ export const AuthContextProvider = ({children}) => {
       return;
     }
 
-    // verify user exists and save user
+    // verifica se possui um vínculo válido com o suap
+    if(responseDataSuap.bondType === "Nenhum"){
+      setError("Você não possui um vínculo válido.")
+      setLoading(false)
+      return;
+    }
+
+    // verifica se o usuário existe e salva
     responseDataSimt = await getDataUserSimt(responseDataSuap.registration);
 
     if(responseDataSimt !== null){
